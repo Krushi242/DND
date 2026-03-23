@@ -5,7 +5,6 @@ import locationIcon from '../../assets/images/location.svg';
 import callIcon from '../../assets/images/call.svg';
 import emailIcon from '../../assets/images/email.svg';
 import btnIcon from '../../assets/images/apme_symbol-white.svg';
-import btnIconGreen from '../../assets/images/apme_symbol-green.svg';
 import SchedualIcon from '../../assets/images/schedual.svg';
 import ad1 from '../../assets/images/ad1.svg';
 import ad2 from '../../assets/images/ad2.svg';
