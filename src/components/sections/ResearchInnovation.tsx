@@ -3,9 +3,9 @@ import Container from '../common/Container';
 
 const ResearchInnovation: React.FC = () => {
   return (
-    <section>
+    <section className="bg-[#F2F4F0] rounded-[10px] p-[20px] md:p-[60px] lg:p-[80px] mx-[16px] lg:mx-[20px]">
       <Container>
-        <div className="bg-[#F2F4F0] rounded-[10px] p-[20px] md:p-[60px] lg:p-[80px] py-[50px]">
+        <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[80px]">
             
             {/* Left Column */}

@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
 
   const navLinks: NavLink[] = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '#' }, // href: '/about'
+    { name: 'About', href: '/about' }, // href: '/about'
     {
       name: 'Products',
       dropdown: [
@@ -104,12 +104,12 @@ const Navbar: React.FC = () => {
               {/* Dropdown */}
               {link.dropdown && (
                 <div className="absolute left-0 top-[70%] hidden group-hover:block z-[100]">
-                  <div className="bg-white shadow-lg rounded-b-md py-3 min-w-[180px] border-t-2 border-[#005948]">
+                  <div className="bg-white shadow-lg rounded-b-md py-3 min-w-[180px] border-t-2 border-[#005948] overflow-hidden">
                     {link.dropdown.map((item) => (
                       <Link
                         key={item.name}
                         to={item.href}
-                        className="block px-5 py-2 text-[15px] text-[#333] hover:bg-gray-50 hover:text-[#F26A21] hover:translate-x-1 transition-all duration-300"
+                        className="block px-5 py-2 text-[15px] text-[#333] hover:bg-gray-50 hover:text-[#F26A21] transition-all duration-300"
                       >
                         {item.name}
                       </Link>

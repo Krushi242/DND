@@ -23,7 +23,7 @@ const CTA: React.FC<CTAProps> = ({
   return (
     <section
   className={`mx-[16px] lg:mx-[20px] rounded-[10px] py-[50px] px-[20px] md:py-[60px] md:px-[60px] bg-cover bg-center min-h-[430px] flex items-center ${className}`}
-  style={{ backgroundImage: `url(${ctaBg})`, backgroundColor: '#F26A21' }}
+  style={{ backgroundImage: `url(${ctaBg})`, backgroundColor: '#F26A21', backgroundSize: 'cover' }}
 >
       <Container className="!px-0">
 

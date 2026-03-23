@@ -36,7 +36,7 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Bottom Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Image (matches the homepage style) */}
             <div className="rounded-[12px] overflow-hidden h-full">
               <img 
