@@ -22,7 +22,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
           {badge}
         </span>
       )}
-      <h2 className="text-4xl md:text-5xl font-heading mb-6 text-heading leading-[1.1]">
+      <h2 className="text-[28px] md:text-5xl font-heading mb-6 text-heading leading-[1.1]">
         {title}
       </h2>
       {subtitle && (

@@ -30,7 +30,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
     <section className={`py-16 lg:py-24 ${outerBg}`}>
       <Container>
         {/* Title */}
-        <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2] text-center mb-10 lg:mb-16">
+        <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] text-center mb-10 lg:mb-16">
           {title}
         </h2>
 

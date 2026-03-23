@@ -34,7 +34,7 @@ const SplitSection: React.FC<Props> = ({
       <Container>
 
         {/* COMMON HEADER */}
-        <div className="mb-6 lg:mb-12">
+        <div className="mb-10 lg:mb-12">
           {tag && (
             <div className="flex items-center gap-2 mb-4">
               <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
@@ -44,7 +44,7 @@ const SplitSection: React.FC<Props> = ({
             </div>
           )}
 
-          <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2]">
+          <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2]">
             {title}
           </h2>
         </div>

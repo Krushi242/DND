@@ -1,7 +1,7 @@
 import React from 'react';
 import icon from '../../assets/images/apme_symbol-green.svg';
 import featuredImg from '../../assets/images/featured.png';
-import btnIcon from '../../assets/images/apme_symbol-white.svg';
+import btnIcon from '../../assets/images/symbol 1.svg';
 import Container from '../common/Container';
 
 const KnowledgeCenter: React.FC = () => {
@@ -10,7 +10,7 @@ const KnowledgeCenter: React.FC = () => {
       
       <Container>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1fr] gap-8 lg:gap-16 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.5fr_1fr] gap-10 lg:gap-16 items-stretch">
 
           {/* Left Content */}
           <div className="flex flex-col justify-between h-full">
@@ -26,7 +26,7 @@ const KnowledgeCenter: React.FC = () => {
               </div>
 
               {/* Heading */}
-              <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2] mb-6">
+              <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-6">
                 Featured Hybrids
               </h2>
 
@@ -38,7 +38,7 @@ const KnowledgeCenter: React.FC = () => {
 
             {/* Button (Bottom aligned) */}
             <div className="mt-6 lg:mt-10">
-              <button className="flex items-center gap-[10px] px-[18px] py-[17px] rounded-[5px] bg-[#005948] text-white text-[16px] font-semibold">
+              <button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
                 Discover Top Varieties
                 <img src={btnIcon} className="w-[18px] h-[18px]" />
               </button>

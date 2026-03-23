@@ -12,7 +12,7 @@ const About: React.FC = () => {
       <Container>
 
         {/* Top Content */}
-        <div className="mb-8 md:mb-16 max-w-3xl">
+        <div className="mb-10 md:mb-16 max-w-3xl">
           
           {/* Tag */}
           <div className="flex items-center gap-2 mb-4">
@@ -23,7 +23,7 @@ const About: React.FC = () => {
           </div>
 
           {/* Heading */}
-          <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2]">
+          <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2]">
             Innovation Rooted in Agricultural Excellence
           </h2>
         </div>
@@ -51,7 +51,7 @@ const About: React.FC = () => {
             </p>
 
             {/* Button */}
-            <Button className="flex items-center gap-[10px] px-[18px] py-[17px] rounded-[5px] bg-[#005948] text-white text-[16px] font-semibold">
+            <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
               Read More
               <img src={icon2} alt="icon" className="w-[18px] h-[18px]" />
             </Button>

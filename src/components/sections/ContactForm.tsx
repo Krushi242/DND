@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Container from '../common/Container';
 import icon from '../../assets/images/apme_symbol-green.svg';
-import btnIcon from '../../assets/images/apme_symbol-white.svg';
+import btnIcon from '../../assets/images/symbol 1.svg';
 import { ChevronDown } from 'lucide-react';
 import locationIcon from '../../assets/images/location.svg';
 import callIcon from '../../assets/images/call.svg';
@@ -54,7 +54,7 @@ const ContactForm: React.FC = () => {
               <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
               <p className="text-[#005948] text-[15px] font-medium">Get in touch</p>
             </div>
-            <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2] mb-6">
+            <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-6">
               Contact Us
             </h2>
             <p className="text-[#333333] text-[18px]">
@@ -63,7 +63,7 @@ const ContactForm: React.FC = () => {
           </div>
 
           {/* Form Card */}
-          <div className="bg-white p-10 rounded-[10px] shadow-sm mb-12 w-full mx-auto">
+          <div className="bg-white px-[20px] py-[30px] md:p-10 rounded-[10px] shadow-sm mb-12 w-full mx-auto">
             {submitSuccess ? (
               <div className="h-64 flex flex-col items-center justify-center text-center space-y-4 animate-fadeIn">
                 <div className="w-16 h-16 bg-[#005948]/10 text-[#005948] rounded-full flex items-center justify-center text-3xl">✓</div>
@@ -143,7 +143,7 @@ const ContactForm: React.FC = () => {
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit" disabled={isSubmitting} className="flex items-center gap-[10px] px-[24px] py-[16px] rounded-[5px] bg-[#005948] hover:bg-[#004235] text-white text-[15px] font-semibold transition-colors disabled:opacity-70 disabled:cursor-not-allowed">
+                <button type="submit" disabled={isSubmitting} className="flex items-center gap-[8px] md:gap-[10px] px-[16px] py-[12px] md:px-[24px] md:py-[16px] rounded-[5px] bg-[#005948] hover:bg-[#004235] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[15px] font-semibold disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-none">
                   {isSubmitting ? 'Sending...' : 'Get in Touch Today'}
                   {!isSubmitting && <img src={btnIcon} alt="icon" className="w-[18px] h-[18px]" />}
                 </button>

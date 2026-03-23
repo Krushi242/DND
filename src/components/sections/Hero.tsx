@@ -4,11 +4,12 @@ import Button from '../common/Button';
 import heroBg from '../../assets/images/hero_bg.png';
 import tagIcon from '../../assets/images/apme_symbol-white.svg';
 import icon from '../../assets/images/symbol 1.svg';
+import greenIcon from '../../assets/images/symbol 2.svg';
 
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative py-[60px] lg:py-0 lg:h-screen lg:min-h-[700px] flex items-center mx-[20px] rounded-[10px] overflow-hidden">      {/* Background Image with Overlay */}
+    <section className="relative py-[60px] lg:py-0 lg:h-[calc(100vh-162px)] lg:min-h-[700px] flex items-center mx-[20px] rounded-[10px] overflow-hidden">      {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroBg})` }}
@@ -23,7 +24,7 @@ const Hero: React.FC = () => {
               Welcome To Our Plantech
             </p>
           </div>
-          <h1 className="text-white mb-6 leading-[1.2] md:leading-[1.2] text-[32px] sm:text-4xl md:text-6xl tracking-[0.011em]">
+          <h1 className="text-white mb-6 leading-[1.2] md:leading-[1.2] text-[34px] md:text-6xl tracking-[0.011em]">
             Hybrid Vegetable Seeds <br className="hidden md:block" />
             Built for Higher Yield & <br className="hidden md:block" />
             Stronger Performance
@@ -35,7 +36,7 @@ const Hero: React.FC = () => {
             <Button
               variant="secondary"
               size="lg"
-              className="flex items-center gap-[10px] px-[18px] py-[17px] rounded-[5px] bg-[#F26A21] text-white text-[16px] font-semibold leading-[120%] hover:opacity-90 transition"
+              className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#F26A21] hover:bg-[#e05a12] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(242,106,33,0.3)] transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold leading-[120%]"
             >
               Explore Our Products
               <img src={icon} alt="icon" className="w-[18px] h-[18px]" />
@@ -43,10 +44,11 @@ const Hero: React.FC = () => {
             <Button
               variant="white"
               size="lg"
-              className="flex items-center gap-[10px] px-[18px] py-[17px] rounded-[5px] !bg-transparent border !border-white text-white text-[16px] font-semibold leading-[120%] hover:!bg-white/10 transition"
+              className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] !bg-transparent border !border-white text-white hover:!bg-white hover:!text-[#005948] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(255,255,255,0.3)] transition-all duration-300 text-[14px] md:text-[16px] font-semibold leading-[120%] group"
             >
               Become a Dealer
-              <img src={icon} alt="icon" className="w-[18px] h-[18px]" />
+              <img src={icon} alt="icon" className="w-[18px] h-[18px] group-hover:hidden" />
+              <img src={greenIcon} alt="icon" className="w-[18px] h-[18px] hidden group-hover:block" />
             </Button>
           </div>
         </div>

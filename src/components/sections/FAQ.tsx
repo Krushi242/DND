@@ -44,7 +44,7 @@ const FAQ: React.FC = () => {
                   <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
                   <p className="text-[#005948] text-[15px] font-medium">FAQ's</p>
                 </div>
-                <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2]">
+                <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2]">
                   Frequently Asked Questions
                 </h2>
               </div>

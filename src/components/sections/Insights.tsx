@@ -2,7 +2,7 @@ import React from 'react';
 import Container from '../common/Container';
 import knowledgeImg from '../../assets/images/knowledge.png';
 import icon from '../../assets/images/apme_symbol-green.svg';
-import btnIcon from '../../assets/images/apme_symbol-white.svg';
+import btnIcon from '../../assets/images/symbol 1.svg';
 
 const Insights: React.FC = () => {
   return (
@@ -13,13 +13,13 @@ const Insights: React.FC = () => {
 
             {/* Left Column */}
             <div className="flex flex-col py-6">
-              <div className="mb-6">
+              <div className="mb-10 md:mb-16">
                 <div className="flex items-center gap-2 mb-4">
                   <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
                   <p className="text-[#005948] text-[15px] font-medium">Knowledge Center</p>
                 </div>
 
-                <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2]">
+                <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2]">
                   Practical Farming Insights
                 </h2>
               </div>
@@ -37,7 +37,7 @@ const Insights: React.FC = () => {
               </div>
 
               <div>
-                <button className="inline-flex items-center gap-[10px] px-[20px] py-[16px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] transition-colors text-white text-[15px] lg:text-[16px] font-semibold">
+                <button className="inline-flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[20px] md:py-[16px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[15px] lg:text-[16px] font-semibold">
                   Visit Knowledge Center
                   <img src={btnIcon} alt="icon" className="w-[18px] h-[18px]" />
                 </button>

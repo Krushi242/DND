@@ -21,7 +21,7 @@ const SustainableAgriculture: React.FC = () => {
         <div className="flex flex-col items-center text-center">
           
           {/* Header */}
-          <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2] mb-[20px]">
+          <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-[20px]">
             Commitment to Sustainable Agriculture
           </h2>
           <p className="text-[#4A4A4A] text-[18px] font-normal leading-[1.4] mb-[50px]">

@@ -40,14 +40,14 @@ const Footer: React.FC = () => {
           <div className="flex flex-col col-span-1">
             <h4 className="text-[20px] font-medium text-white mb-6">Quick Links</h4>
             <ul className="space-y-[8px] text-[16px]">
-              <li><a href="#" className="hover:text-white transition-colors">Home</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Products</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Research & Innovation</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Why Choose Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Knowledge Center</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Dealer / Distributor</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Home</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">About Us</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Products</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Research & Innovation</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Why Choose Us</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Knowledge Center</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Dealer / Distributor</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Contact Us</a></li>
             </ul>
           </div>
 
@@ -55,16 +55,16 @@ const Footer: React.FC = () => {
           <div className="flex flex-col col-span-1">
             <h4 className="text-[20px] font-medium text-white mb-6">Our Product</h4>
             <ul className="space-y-[8px] text-[16px]">
-              <li><a href="#" className="hover:text-white transition-colors">Okra Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Watermelon Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Muskmelon Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Bitter Gourd Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Bottle Gourd Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Chilli Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Tomato Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cucumber Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cluster Bean Seeds</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Beans Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Okra Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Watermelon Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Muskmelon Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Bitter Gourd Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Bottle Gourd Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Chilli Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Tomato Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Cucumber Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Cluster Bean Seeds</a></li>
+              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Beans Seeds</a></li>
             </ul>
           </div>
 
@@ -101,11 +101,11 @@ const Footer: React.FC = () => {
         <div className="max-w-[1200px] mx-auto px-[20px] flex flex-col md:flex-row justify-between items-center text-[13px] text-[#E5E5E5]">
           <p>© 2026 DRD Plantech LLP. All Rights Reserved. Hybrid Vegetable Seed Manufacturer in India.</p>
           <div className="flex space-x-4 mt-4 md:mt-0 font-medium">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Privacy Policy</a>
             <span className="text-[#1A6A5A]">|</span>
-            <a href="#" className="hover:text-white transition-colors">Terms & Conditions</a>
+            <a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Terms & Conditions</a>
             <span className="text-[#1A6A5A]">|</span>
-            <a href="#" className="hover:text-white transition-colors">Disclaimer</a>
+            <a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Disclaimer</a>
           </div>
         </div>
       </div>

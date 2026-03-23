@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/">
-            <img src={logo} alt="Krushi" className="w-[70px] md:w-[150px] h-auto object-contain" />
+            <img src={logo} alt="Krushi" className="w-[50px] md:w-[100px] lg:w-[120px] h-[98px] object-contain" />
           </Link>
         </div>
 
@@ -59,10 +59,10 @@ const Navbar: React.FC = () => {
               
               {link.dropdown ? (
                 <div
-                  className={`flex items-center gap-1 text-[18px] font-medium cursor-pointer ${
+                  className={`flex items-center gap-1 text-[18px] font-medium cursor-pointer transition-all duration-300 ${
                     isActive(link.href) || isDropdownActive(link.dropdown)
                       ? 'bg-[#0F5D4E] text-white px-6 py-3 rounded-md'
-                      : 'text-[#333] hover:text-[#0F5D4E]'
+                      : 'text-[#333] hover:text-[#F26A21] hover:-translate-y-0.5'
                   }`}
                 >
                   {link.name}
@@ -71,10 +71,10 @@ const Navbar: React.FC = () => {
               ) : (
                 <Link 
                   to={link.href || '#'}
-                  className={`flex items-center gap-1 text-[18px] font-medium ${
+                  className={`flex items-center gap-1 text-[18px] font-medium inline-block transition-all duration-300 ${
                     isActive(link.href)
                       ? 'bg-[#0F5D4E] text-white px-6 py-3 rounded-md'
-                      : 'text-[#333] hover:text-[#0F5D4E]'
+                      : 'text-[#333] hover:text-[#F26A21] hover:-translate-y-0.5'
                   }`}
                 >
                   {link.name}
@@ -89,7 +89,7 @@ const Navbar: React.FC = () => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className="block px-5 py-2 text-[15px] text-[#333] hover:bg-gray-100"
+                        className="block px-5 py-2 text-[15px] text-[#333] hover:bg-gray-100 hover:text-[#F26A21] hover:translate-x-1 transition-all duration-300"
                       >
                         {item.name}
                       </Link>
@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
             <Button
               variant="primary"
               size="sm"
-              className="flex items-center gap-[10px] px-[18px] py-[17px] rounded-[5px] bg-[#005948] text-white text-[16px] font-semibold leading-[120%]"
+              className="flex items-center gap-[10px] px-[18px] py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[16px] font-semibold leading-[120%]"
             >
               Contact Us
               <img src={icon} alt="icon" className="w-[18px] h-[18px]" />
@@ -137,8 +137,8 @@ const Navbar: React.FC = () => {
               ) : (
                 <Link 
                   to={link.href || '#'}
-                  className={`text-lg font-medium py-2 block ${
-                    isActive(link.href) ? 'text-[#0F5D4E]' : 'text-text hover:text-[#0F5D4E]'
+                  className={`text-lg font-medium py-2 block transition-all duration-300 ${
+                    isActive(link.href) ? 'text-[#0F5D4E]' : 'text-text hover:text-[#F26A21] hover:translate-x-1'
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -165,7 +165,7 @@ const Navbar: React.FC = () => {
           ))}
 
           <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="w-full">
-            <Button variant="primary" className="w-full flex items-center justify-center gap-2 bg-[#005948] text-white py-3 rounded-[5px]">
+            <Button variant="primary" className="w-full flex items-center justify-center gap-2 bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white py-3 rounded-[5px]">
               Contact Us
               <img src={icon} alt="icon" className="w-4 h-4" />
             </Button>

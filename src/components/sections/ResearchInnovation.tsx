@@ -10,7 +10,7 @@ const ResearchInnovation: React.FC = () => {
             
             {/* Left Column */}
             <div>
-              <h2 className="text-[#1F1F1F] text-[32px] sm:text-[36px] font-medium leading-[1.2] mb-[24px]">
+              <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-[24px]">
                 Research & Innovation
               </h2>
               <p className="text-[#333333] text-[18px] font-normal leading-[1.4] tracking-[0.011em]">

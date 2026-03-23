@@ -20,12 +20,12 @@ const CTA: React.FC<CTAProps> = ({
 }) => {
   return (
     <section
-      className="mx-[20px] rounded-[10px] py-[20px] md:py-[60px] bg-cover bg-center"
+      className="mx-[20px] rounded-[10px] py-[50px] px-[20px] md:py-[60px] md:px-[60px] bg-cover bg-center"
       style={{ backgroundImage: `url(${ctaBg})`, backgroundColor: '#F26A21' }}
     >
-      <Container>
+      <Container className="!px-0">
 
-        <div className="flex flex-col items-center justify-center text-center px-6 sm:px-10">
+        <div className="flex flex-col items-center justify-center text-center">
 
           {/* Tag */}
           {tagText && (
@@ -38,7 +38,7 @@ const CTA: React.FC<CTAProps> = ({
           )}
 
           {/* Heading */}
-          <h2 className="text-white text-[36px] font-medium leading-[1.2] mb-6 max-w-4xl">
+          <h2 className="text-white text-[28px] md:text-[36px] font-medium leading-[1.2] mb-6 max-w-4xl">
             {title}
           </h2>
 
@@ -48,7 +48,7 @@ const CTA: React.FC<CTAProps> = ({
           </p>
 
           {/* Button */}
-          <Button className="flex items-center gap-[10px] px-[18px] py-[17px] rounded-[5px] bg-[#005948] text-white text-[16px] font-semibold">
+          <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
             {buttonText}
             <img src={icon2} alt="icon" className="w-[18px] h-[18px]" />
           </Button>

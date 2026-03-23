@@ -19,7 +19,7 @@ const GeographicPresence: React.FC = () => {
 
           {/* Content */}
           <div className="relative z-10 p-[40px] md:p-[60px] max-w-4xl">
-            <h2 className="text-white text-[32px] md:text-[40px] font-medium leading-[1.2] mb-[20px]">
+            <h2 className="text-white text-[28px] md:text-[40px] font-medium leading-[1.2] mb-[20px]">
               Geographic Presence
             </h2>
             <p className="text-white/95 text-[16px] md:text-[18px] font-normal leading-[1.6]">

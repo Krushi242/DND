@@ -26,12 +26,12 @@ const FieldTrials: React.FC = () => {
         <div>
 
           {/* Header */}
-          <div className="flex flex-col items-center mb-8 md:mb-16">
+          <div className="flex flex-col items-center mb-10 md:mb-16">
             <div className="flex items-center gap-2 mb-4">
               <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
               <p className="text-[#005948] text-[16px] font-medium">Why Choose Us</p>
             </div>
-            <h2 className="text-center text-[#1F1F1F] text-[36px] font-medium leading-[1.2]">
+            <h2 className="text-center text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2]">
               Reliable Seeds. Proven Results.
             </h2>
           </div>

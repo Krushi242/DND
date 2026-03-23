@@ -15,7 +15,7 @@ const PageBanner: React.FC<PageBannerProps> = ({ title, backgroundImage }) => {
       {/* No overlay for background image */}
       {/* Text Content */}
       <Container className="h-full relative z-10 flex items-center w-full">
-        <h1 className="text-white text-4xl sm:text-5xl md:text-[56px] font-medium tracking-[0.011em] leading-[1.2]">
+        <h1 className="text-white text-[34px] md:text-[56px] font-medium tracking-[0.011em] leading-[1.2]">
           {title}
         </h1>
       </Container>
