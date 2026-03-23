@@ -9,7 +9,7 @@ interface PageBannerProps {
 const PageBanner: React.FC<PageBannerProps> = ({ title, backgroundImage }) => {
   return (
     <section 
-      className="mx-[20px] rounded-[10px] bg-[#0F5D4E] mt-[20px] relative overflow-hidden h-[467px] flex items-center bg-cover bg-center"
+      className="mx-[16px] lg:mx-[20px] rounded-[10px] bg-[#0F5D4E] relative overflow-hidden h-[467px] flex items-center bg-cover bg-center"
       style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : {}}
     >
       {/* No overlay for background image */}

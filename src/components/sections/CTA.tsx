@@ -10,19 +10,21 @@ export interface CTAProps {
   title: string;
   description: string;
   buttonText: string;
+  className?: string;
 }
 
 const CTA: React.FC<CTAProps> = ({
   tagText,
   title,
   description,
-  buttonText
+  buttonText,
+  className = '',
 }) => {
   return (
     <section
-      className="mx-[16px] lg:mx-[20px]  rounded-[10px] py-[50px] px-[20px] md:py-[60px] md:px-[60px] bg-cover bg-center"
-      style={{ backgroundImage: `url(${ctaBg})`, backgroundColor: '#F26A21' }}
-    >
+  className={`mx-[16px] lg:mx-[20px] rounded-[10px] py-[50px] px-[20px] md:py-[60px] md:px-[60px] bg-cover bg-center min-h-[430px] flex items-center ${className}`}
+  style={{ backgroundImage: `url(${ctaBg})`, backgroundColor: '#F26A21' }}
+>
       <Container className="!px-0">
 
         <div className="flex flex-col items-center justify-center text-center">

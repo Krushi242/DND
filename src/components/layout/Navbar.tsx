@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/">
-            <img src={logo} alt="Krushi" className="w-[50px] md:w-[100px] lg:w-[120px] h-[98px] object-contain" />
+            <img src={logo} alt="Krushi" className="w-[50px] md:w-[90px] h-[98px] object-contain" />
           </Link>
         </div>
 
@@ -103,11 +103,7 @@ const Navbar: React.FC = () => {
 
               {/* Dropdown */}
               {link.dropdown && (
-                <div className="absolute left-0 top-full mt-2 hidden group-hover:block z-[100] pt-2">
-  
-                  {/* Hover bridge (fix gap issue) */}
-                  <div className="absolute -top-2 left-0 w-full h-2"></div>
-
+                <div className="absolute left-0 top-[70%] hidden group-hover:block z-[100]">
                   <div className="bg-white shadow-lg rounded-b-md py-3 min-w-[180px] border-t-2 border-[#005948]">
                     {link.dropdown.map((item) => (
                       <Link
@@ -142,7 +138,7 @@ const Navbar: React.FC = () => {
           className="md:hidden text-[#005948] p-2"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          <svg className="w-[36px] h-[36px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-[26px] h-[26px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
           </svg>
         </button>

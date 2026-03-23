@@ -18,30 +18,30 @@ const QualityAssurance: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 bg-[#FAFAF9]">
+    <section className="py-[60px] md:py-[100px] bg-[#FAFAF9]">
       <Container>
         <div className="flex flex-col items-center text-center">
           
           {/* Header */}
-          <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-[15px]">
+          <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-[20px]">
             Quality Assurance
           </h2>
-          <p className="text-[#4A4A4A] text-[18px] font-normal leading-[1.4] mb-[40px] max-w-2xl">
+          <p className="text-[#4A4A4A] text-[16px] font-normal mb-[40px] md:mb-[60px] max-w-2xl">
             Quality is maintained at every stage of seed production and processing.
           </p>
-          <p className="text-[#333333] text-[18px] font-medium leading-[1.4] mb-[40px]">
+          <p className="text-[#333333] text-[18px] font-medium leading-[1.4] mb-[20px] md:mb-[30px]">
             Our quality standards include:
           </p>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-[20px] w-full mb-[50px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-[20px] w-full mb-[30px]">
             {cards.map((card, index) => (
               <div 
                 key={index} 
                 className="bg-[#F2F4F0] rounded-[10px] p-[30px] flex flex-col items-center justify-center min-h-[220px] transition-transform duration-300 hover:-translate-y-1"
               >
                 <img src={card.icon} alt={card.title} className="w-[64px] h-[64px] mb-[24px]" />
-                <p className="text-[#1F1F1F] text-[15px] font-medium leading-[1.4] text-center">
+                <p className="text-[#1F1F1F] text-[16px] font-medium text-center">
                   {card.title}
                 </p>
               </div>
@@ -49,7 +49,7 @@ const QualityAssurance: React.FC = () => {
           </div>
 
           {/* Footer Text */}
-          <p className="text-[#4A4A4A] text-[16px] font-normal leading-[1.5] max-w-3xl text-center">
+          <p className="text-[#4A4A4A] text-[16px] font-normal text-center">
             Seeds are processed, graded, and packed using controlled procedures to preserve viability and ensure consistent field performance.
           </p>
 

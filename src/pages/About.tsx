@@ -17,10 +17,10 @@ const AboutPage: React.FC = () => {
     <>
       <PageBanner title="About DRD Plantech LLP" backgroundImage={aboutBg} />
       
-      <section className="py-24">
+      <section className="py-[60px] md:py-[100px]">
         <Container>
           {/* Top Content */}
-          <div className="mb-16 max-w-4xl">
+          <div className="mb-10 lg:mb-12 max-w-4xl">
             {/* Tag */}
             <div className="flex items-center gap-2 mb-4">
               <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
@@ -30,7 +30,7 @@ const AboutPage: React.FC = () => {
             </div>
 
             {/* Heading */}
-            <h2 className="text-[#1F1F1F] text-[36px] font-medium leading-[1.2]">
+            <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2]">
               Hybrid Vegetable Seed Company Focused on Performance and Reliability
             </h2>
           </div>
@@ -48,25 +48,25 @@ const AboutPage: React.FC = () => {
 
             {/* Description (Custom detailed content for the About Page) */}
             <div>
-              <p className="text-[#333333] text-[18px] font-normal leading-[1.3] tracking-[0.011em] mb-[20px]">
+              <p className="text-[#333333] text-[16px] md:text-[18px] font-normal tracking-[0.011em] mb-[10px]">
                 DRD Plantech LLP is a hybrid vegetable seed company dedicated to developing high-yield, disease-resistant, and market-oriented seed varieties for modern agriculture. We specialize in producing premium hybrid seeds that support commercial vegetable growers, progressive farmers, and distribution partners across India.
               </p>
               
-              <p className="text-[#333333] text-[18px] font-normal leading-[1.3] tracking-[0.011em] mb-[40px]">
+              <p className="text-[#333333] text-[16px] md:text-[18px] font-normal tracking-[0.011em] mb-[26px]">
                 Our product portfolio includes multiple vegetable segments such as okra, watermelon, muskmelon, bitter gourd, bottle gourd, chilli, tomato, cucumber, cluster bean, and beans. Each variety is developed with a focus on productivity, uniformity, adaptability, and farmer profitability.
               </p>
 
-              <h3 className="text-[#1F1F1F] text-[24px] font-medium leading-[1.2] mb-[15px]">
+              <p className="text-[#1F1F1F] text-[16px] md:text-[18px] font-semibold mb-[10px]">
                 Our Vision
-              </h3>
-              <p className="text-[#333333] text-[18px] font-normal leading-[1.3] tracking-[0.011em] mb-[40px]">
+              </p>
+              <p className="text-[#333333] text-[16px] md:text-[18px] font-normal tracking-[0.011em] mb-[40px]">
                 To contribute to sustainable agricultural growth by delivering innovative hybrid vegetable seed solutions that improve crop performance and enhance farmer income.
               </p>
 
-              <h3 className="text-[#1F1F1F] text-[24px] font-medium leading-[1.2] mb-[15px]">
+              <p className="text-[#1F1F1F] text-[16px] md:text-[18px] font-semibold mb-[10px]">
                 Our Mission
-              </h3>
-              <ul className="list-disc pl-5 text-[#333333] text-[18px] font-normal leading-[1.4] tracking-[0.011em] space-y-[12px] mb-[30px]">
+              </p>
+              <ul className="list-disc pl-5 text-[#333333] text-[16px] md:text-[18px] font-normal leading-[1.4] tracking-[0.011em] space-y-[6px] mb-[30px]">
                 <li>To develop high-performance hybrid vegetable seeds through research-driven breeding programs</li>
                 <li>To ensure strong germination, genetic purity, and disease resistance</li>
                 <li>To support farmers with reliable seed solutions suited to diverse climatic conditions</li>
@@ -113,6 +113,7 @@ const AboutPage: React.FC = () => {
         title="Partner With Us"
         description="Whether you are a farmer seeking high-performance hybrids or a dealer looking to expand your portfolio with reliable seed varieties, DRD Plantech LLP is committed to supporting your growth."
         buttonText="Apply for Dealership"
+        className="mb-[100px]"
       />
     </>
   );
