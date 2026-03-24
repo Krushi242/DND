@@ -10,10 +10,17 @@ import CTA from '../components/sections/CTA';
 import FAQ from '../components/sections/FAQ';
 import ContactForm from '../components/sections/ContactForm';
 import Commercial from '../components/sections/Commercial';
+import SEO from '../components/common/SEO';
 
 const Home: React.FC = () => {
   return (
     <>
+      <SEO
+        title="Hybrid Vegetable Seeds Company in India"
+        description="DRD Plantech LLP delivers high-performance hybrid vegetable and field crop seeds focused on yield, uniformity, reliability, and dealer support."
+        path="/"
+        keywords="hybrid vegetable seeds India, DRD Plantech LLP, vegetable seed company, field crop seeds, dealer network, commercial farming"
+      />
       <Hero />
       <About />
       <Categories />

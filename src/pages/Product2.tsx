@@ -7,10 +7,17 @@ import featuredImg from '../assets/images/featured.png';
 import CTA from '../components/sections/CTA';
 import FAQ from '../components/sections/FAQ';
 import ContactForm from '../components/sections/ContactForm';
+import SEO from '../components/common/SEO';
 
 const Product2: React.FC = () => {
   return (
     <>
+      <SEO
+        title="Field Crop Seeds"
+        description="Browse DRD Plantech LLP field crop seeds for maize, paddy, cotton, pulses, and millets developed for strong performance, resilience, and market-ready output."
+        path="/product-2"
+        keywords="field crop seeds India, maize seeds, paddy seeds, cotton seeds, pulse seeds, DRD Plantech LLP"
+      />
       <PageBanner title="Our Field Crop Seeds" backgroundImage={aboutBg} />
       
       <ProductShowcase 
