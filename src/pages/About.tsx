@@ -7,6 +7,7 @@ import SplitSection from '../components/common/SplitSection';
 import GeographicPresence from '../components/sections/GeographicPresence';
 import SustainableAgriculture from '../components/sections/SustainableAgriculture';
 import Container from '../components/common/Container';
+import SEO from '../components/common/SEO';
 import aboutImg from '../assets/images/about.png';
 import farmersImg from '../assets/images/commercial.png';
 import icon from '../assets/images/apme_symbol-green.svg';
@@ -15,6 +16,12 @@ import aboutBg from '../assets/images/about_bg.png';
 const AboutPage: React.FC = () => {
   return (
     <>
+      <SEO
+        title="About DRD Plantech LLP"
+        description="Learn about DRD Plantech LLP, our hybrid seed research, quality standards, farmer-focused approach, and commitment to sustainable agriculture."
+        path="/about"
+        keywords="about DRD Plantech LLP, hybrid seed company, seed research, quality assurance seeds, sustainable agriculture India"
+      />
       <PageBanner title="About DRD Plantech LLP" backgroundImage={aboutBg} />
       
       <section className="py-[60px] md:py-[100px]">

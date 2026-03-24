@@ -14,10 +14,17 @@ import beansImg from '../assets/images/Beans.png';
 import CTA from '../components/sections/CTA';
 import FAQ from '../components/sections/FAQ';
 import ContactForm from '../components/sections/ContactForm';
+import SEO from '../components/common/SEO';
 
 const Product1: React.FC = () => {
   return (
     <>
+      <SEO
+        title="Vegetable Seeds"
+        description="Explore DRD Plantech LLP vegetable seed hybrids including tomato, okra, bitter gourd, bottle gourd, watermelon, muskmelon, cucumber, chilli, and beans."
+        path="/product-1"
+        keywords="vegetable seeds India, tomato hybrid seeds, okra seeds, chilli seeds, cucumber seeds, DRD Plantech LLP products"
+      />
       <PageBanner title="Our Vegetable Seeds" backgroundImage={aboutBg} />
       
       <ProductShowcase 
