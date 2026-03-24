@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, MapPin, Building2, MessageSquare, Calendar, RefreshCcw, Filter, ChevronRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Building2, MessageSquare, Calendar, RefreshCcw, Filter, ChevronRight, Download } from 'lucide-react';
 
 interface Contact {
   id: number;
@@ -42,11 +42,39 @@ const AdminDashboard: React.FC = () => {
     ? contacts 
     : contacts.filter(c => c.inquiry_type === filter);
 
+  const downloadCSV = () => {
+    const headers = ['ID', 'Name', 'Phone', 'Email', 'Company', 'City', 'Inquiry Type', 'Message', 'Date'];
+    const csvContent = [
+      headers.join(','),
+      ...filteredContacts.map(c => [
+        c.id,
+        `"${c.name}"`,
+        `"${c.phone}"`,
+        `"${c.email}"`,
+        `"${c.company}"`,
+        `"${c.city}"`,
+        `"${c.inquiry_type}"`,
+        `"${c.message.replace(/"/g, '""')}"`,
+        `"${new Date(c.created_at).toLocaleString()}"`
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `contacts_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const getInquiryBadge = (type: string) => {
     const colors: Record<string, string> = {
       sales: 'bg-blue-100 text-blue-700 border-blue-200',
-      product: 'bg-green-100 text-green-700 border-green-200',
-      support: 'bg-amber-100 text-amber-700 border-amber-200',
+      product: 'bg-[#F26A21]/10 text-[#F26A21] border-[#F26A21]/20',
+      support: 'bg-[#005948]/10 text-[#005948] border-[#005948]/20',
       other: 'bg-gray-100 text-gray-700 border-gray-200'
     };
     const color = colors[type] || colors.other;
@@ -58,7 +86,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-8 font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-12 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -72,7 +100,14 @@ const AdminDashboard: React.FC = () => {
             <p className="text-[#64748B] mt-1">Manage and view all incoming inquiries from the contact form.</p>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <button 
+              onClick={downloadCSV}
+              className="flex items-center gap-2 px-4 py-2 bg-[#F26A21] text-white rounded-lg font-medium hover:bg-[#e05a12] transition-colors shadow-sm"
+            >
+              <Download size={18} />
+              Export CSV
+            </button>
             <button 
               onClick={fetchContacts}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E2E8F0] rounded-lg text-[#475569] font-medium hover:bg-gray-50 transition-colors shadow-sm"
@@ -100,26 +135,26 @@ const AdminDashboard: React.FC = () => {
 
         {/* Stats Summary */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-[#005948] border-[#E2E8F0] shadow-sm">
             <p className="text-[#64748B] text-sm font-medium mb-1">Total Inquiries</p>
             <p className="text-3xl font-bold text-[#1E293B]">{contacts.length}</p>
           </div>
-          <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-blue-600 border-[#E2E8F0] shadow-sm">
             <p className="text-[#64748B] text-sm font-medium mb-1">Sales Leads</p>
             <p className="text-3xl font-bold text-blue-600">{contacts.filter(c => c.inquiry_type === 'sales').length}</p>
           </div>
-          <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-[#F26A21] border-[#E2E8F0] shadow-sm">
             <p className="text-[#64748B] text-sm font-medium mb-1">Product Inquiries</p>
-            <p className="text-3xl font-bold text-green-600">{contacts.filter(c => c.inquiry_type === 'product').length}</p>
+            <p className="text-3xl font-bold text-[#F26A21]">{contacts.filter(c => c.inquiry_type === 'product').length}</p>
           </div>
-          <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-[#005948] border-[#E2E8F0] shadow-sm">
             <p className="text-[#64748B] text-sm font-medium mb-1">Support Requests</p>
-            <p className="text-3xl font-bold text-amber-600">{contacts.filter(c => c.inquiry_type === 'support').length}</p>
+            <p className="text-3xl font-bold text-[#005948]">{contacts.filter(c => c.inquiry_type === 'support').length}</p>
           </div>
         </div>
 
         {/* Table/Content */}
-        <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-md overflow-hidden">
+        <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-md overflow-hidden mb-12">
           {error && (
             <div className="p-8 text-center bg-red-50">
               <p className="text-red-600 font-medium">Error: {error}</p>
@@ -146,8 +181,9 @@ const AdminDashboard: React.FC = () => {
               <p className="text-[#64748B]">No submissions match your current filter.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-200">
+              <div className="min-w-[1000px] md:min-w-0">
+                <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0]">
                     <th className="px-6 py-4 text-[13px] font-semibold text-[#475569] uppercase tracking-wider">Contact Info</th>
@@ -190,7 +226,7 @@ const AdminDashboard: React.FC = () => {
                         {getInquiryBadge(contact.inquiry_type)}
                       </td>
                       <td className="px-6 py-5 align-top max-w-md">
-                        <div className="bg-[#F1F5F9] p-3 rounded-lg text-sm text-[#475569] line-clamp-3 group-hover:line-clamp-none transition-all cursor-default relative">
+                        <div className="bg-[#F1F5F9] p-3 rounded-lg text-sm text-[#475569] line-clamp-3 group-hover:line-clamp-none transition-all cursor-default relative break-all">
                           <MessageSquare size={14} className="absolute -top-2 -left-2 bg-white rounded-full p-0.5 shadow-sm text-[#64748B]" />
                           {contact.message}
                         </div>
@@ -207,6 +243,7 @@ const AdminDashboard: React.FC = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           )}
         </div>
