@@ -26,11 +26,12 @@ const App: React.FC = () => {
           </Routes>
         </main>
         <Footer />
+        <SpeedInsights/>
+
       </div>
     </Router>
   );
 };
 
-<SpeedInsights/>
 
 export default App;
