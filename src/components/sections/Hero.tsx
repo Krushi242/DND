@@ -14,7 +14,6 @@ const Hero: React.FC = () => {
         src={heroBg} 
         alt="Hero Background" 
         className="absolute inset-0 z-0 w-full h-full object-cover"
-        fetchPriority="high"
       />
       
       {/* Mobile Bottom Overlay for clear button contrast */}
