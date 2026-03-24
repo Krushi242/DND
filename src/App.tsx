@@ -8,6 +8,7 @@ import About from './pages/About';
 import Product1 from './pages/Product1';
 import Product2 from './pages/Product2';
 import Contact from './pages/Contact';
+import { SpeedInsights } from '@vercel/speed-insights/nuxt/runtime';
 
 const App: React.FC = () => {
   return (
@@ -29,5 +30,7 @@ const App: React.FC = () => {
     </Router>
   );
 };
+
+<SpeedInsights/>
 
 export default App;
