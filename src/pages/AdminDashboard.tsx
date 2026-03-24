@@ -22,7 +22,7 @@ const AdminDashboard: React.FC = () => {
   const fetchContacts = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/contacts');
+      const response = await fetch('/api/contacts');
       if (!response.ok) throw new Error('Failed to fetch data');
       const data = await response.json();
       setContacts(data);
