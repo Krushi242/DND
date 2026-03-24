@@ -10,11 +10,12 @@ import greenIcon from '../../assets/images/symbol 2.svg';
 const Hero: React.FC = () => {
   return (
     <section className="relative py-[60px] lg:py-0 lg:h-[calc(100vh-162px)] lg:min-h-[700px] flex items-center mx-[16px] lg:mx-[20px] rounded-[10px] overflow-hidden">      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBg})` }}
-      >
-      </div>
+      <img 
+        src={heroBg} 
+        alt="Hero Background" 
+        className="absolute inset-0 z-0 w-full h-full object-cover"
+        fetchPriority="high"
+      />
       
       {/* Mobile Bottom Overlay for clear button contrast */}
       <div className="absolute inset-x-0 bottom-0 h-[60%] z-[5] bg-gradient-to-t from-[#002f23] via-[#002f23]/60 to-transparent opacity-90 md:hidden pointer-events-none"></div>

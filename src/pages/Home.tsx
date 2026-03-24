@@ -20,6 +20,7 @@ const Home: React.FC = () => {
         description="DRD Plantech LLP delivers high-performance hybrid vegetable and field crop seeds focused on yield, uniformity, reliability, and dealer support."
         path="/"
         keywords="hybrid vegetable seeds India, DRD Plantech LLP, vegetable seed company, field crop seeds, dealer network, commercial farming"
+        preloadImage="/src/assets/images/hero_bg.webp"
       />
       <Hero />
       <About />

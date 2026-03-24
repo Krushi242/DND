@@ -59,6 +59,7 @@ const SplitSection: React.FC<Props> = ({
                 src={image}
                 alt={imageAlt}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
 
@@ -104,6 +105,7 @@ const SplitSection: React.FC<Props> = ({
                 src={image}
                 alt={imageAlt}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
 

@@ -50,6 +50,7 @@ const Insights: React.FC = () => {
                 src={knowledgeImg}
                 alt="Practical Farming Insights"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
 

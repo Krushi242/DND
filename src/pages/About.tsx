@@ -21,6 +21,7 @@ const AboutPage: React.FC = () => {
         description="Learn about DRD Plantech LLP, our hybrid seed research, quality standards, farmer-focused approach, and commitment to sustainable agriculture."
         path="/about"
         keywords="about DRD Plantech LLP, hybrid seed company, seed research, quality assurance seeds, sustainable agriculture India"
+        preloadImage="/src/assets/images/about_bg.webp"
       />
       <PageBanner title="About DRD Plantech LLP" backgroundImage={aboutBg} />
       

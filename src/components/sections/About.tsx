@@ -37,6 +37,7 @@ const About: React.FC = () => {
               src={aboutImg} 
               alt="Agriculture" 
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
 

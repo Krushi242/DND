@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
+import SEO from '../components/common/SEO';
 import PageBanner from '../components/sections/PageBanner';
 import ContactContent from '../components/sections/ContactContent';
 import aboutBg from '../assets/images/about_bg.webp';
@@ -6,7 +7,8 @@ import btnIcon from '../assets/images/symbol 1.svg';
 import greenIcon from '../assets/images/symbol 2.svg';
 import CTA from '../components/sections/CTA';
 import FAQ from '../components/sections/FAQ';
-import OfficeLocation from '../components/sections/OfficeLocation';
+
+const OfficeLocation = lazy(() => import('../components/sections/OfficeLocation'));
 
 
 const Contact: React.FC = () => {
@@ -16,6 +18,12 @@ const Contact: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Contact Us"
+        description="Get in touch with DRD Plantech LLP for product inquiries, dealership opportunities, and agricultural support."
+        path="/contact"
+        preloadImage="/src/assets/images/about_bg.webp"
+      />
       <PageBanner
         title="Contact Us"
         description="Get in touch with our team for product inquiries, dealership opportunities, bulk orders, and crop advisory support. We are committed to providing prompt, professional assistance to farmers, dealers, and agricultural partners."
@@ -43,7 +51,9 @@ const Contact: React.FC = () => {
       />
       <ContactContent />
 
-      <OfficeLocation />
+      <Suspense fallback={<div className="h-[300px] bg-gray-50 animate-pulse rounded-[10px] mx-[16px] lg:mx-[20px]"></div>}>
+        <OfficeLocation />
+      </Suspense>
 
       <FAQ
         className="py-[50px] md:py-[80px] mx-[16px] lg:mx-[20px] bg-[#F2F4F0]"

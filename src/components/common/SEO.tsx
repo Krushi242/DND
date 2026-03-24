@@ -6,6 +6,7 @@ type SEOProps = {
   path: string;
   image?: string;
   keywords?: string;
+  preloadImage?: string;
 };
 
 const SITE_NAME = 'DRD Plantech LLP';
@@ -47,7 +48,7 @@ const setLinkTag = (
   tag.setAttribute('href', href);
 };
 
-const SEO = ({ title, description, path, image, keywords }: SEOProps) => {
+const SEO = ({ title, description, path, image, keywords, preloadImage }: SEOProps) => {
   useEffect(() => {
     const origin = window.location.origin;
     const canonicalUrl = new URL(path, origin).toString();
@@ -80,6 +81,10 @@ const SEO = ({ title, description, path, image, keywords }: SEOProps) => {
     );
     setMetaTag('meta[name="twitter:image"]', { name: 'twitter:image' }, imageUrl);
     setLinkTag('link[rel="canonical"]', { rel: 'canonical' }, canonicalUrl);
+
+    if (preloadImage) {
+      setLinkTag('link[rel="preload"]', { rel: 'preload', as: 'image' }, preloadImage);
+    }
 
     let schemaScript = document.getElementById('seo-structured-data');
     if (!schemaScript) {

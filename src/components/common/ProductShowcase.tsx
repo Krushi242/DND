@@ -44,6 +44,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
               src={image} 
               alt={imageAlt} 
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
 
