@@ -52,7 +52,7 @@ const ContactForm: React.FC = () => {
           <div className="flex flex-col items-center mb-12 text-center">
             <div className="flex items-center gap-2 mb-4">
               <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
-              <p className="text-[#005948] text-[15px] font-medium">Get in touch</p>
+              <p className="text-[#005948] text-[16px] font-regular">Get in touch</p>
             </div>
             <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-6">
               Contact Us

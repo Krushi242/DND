@@ -6,7 +6,7 @@ import btnIcon from '../assets/images/symbol 1.svg';
 import greenIcon from '../assets/images/symbol 2.svg';
 import CTA from '../components/sections/CTA';
 import FAQ from '../components/sections/FAQ';
-import ContactForm from '../components/sections/ContactForm';
+import SEO from '../components/common/SEO';
 
 
 const Contact: React.FC = () => {
@@ -16,6 +16,12 @@ const Contact: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Contact DRD Plantech LLP"
+        description="Contact DRD Plantech LLP for hybrid seed inquiries, dealership opportunities, bulk orders, and crop support from our agricultural team."
+        path="/contact"
+        keywords="contact DRD Plantech LLP, seed company contact, dealership inquiry, bulk seed orders, agricultural support"
+      />
       <PageBanner
         title="Contact Us"
         description="Get in touch with our team for product inquiries, dealership opportunities, bulk orders, and crop advisory support. We are committed to providing prompt, professional assistance to farmers, dealers, and agricultural partners."
@@ -42,16 +48,19 @@ const Contact: React.FC = () => {
         }
       />
       <ContactContent />
+
+      <FAQ />
+
       <CTA 
         tagText="Become a Dealer Partner"
         title="Connect With Our Team Today"
         description="We are committed to providing reliable hybrid vegetable seeds, professional support, and long-term agricultural partnerships. Contact us today to discuss your requirements."
         buttonText="Send Inquiry"
+        className="mb-[100px]"
+
       />
       
-      <FAQ />
       
-      <ContactForm />
     </>
   );
 };

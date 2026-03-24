@@ -16,7 +16,7 @@ const Insights: React.FC = () => {
               <div className="mb-5 md:mb-12">
                 <div className="flex items-center gap-2 mb-4">
                   <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
-                  <p className="text-[#005948] text-[15px] font-medium">Knowledge Center</p>
+                  <p className="text-[#005948] text-[16px] font-regular">Knowledge Center</p>
                 </div>
 
                 <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2]">

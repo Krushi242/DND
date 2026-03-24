@@ -1,6 +1,6 @@
 import React from 'react';
 import icon from '../../assets/images/apme_symbol-green.svg';
-import featuredImg from '../../assets/images/featured.png';
+import featuredVideo from '../../assets/video/futured-video.mp4';
 import btnIcon from '../../assets/images/symbol 1.svg';
 import Container from '../common/Container';
 
@@ -20,7 +20,7 @@ const KnowledgeCenter: React.FC = () => {
               {/* Tag */}
               <div className="flex items-center gap-2 mb-4">
                 <img src={icon} className="w-[16px] h-[16px]" />
-                <p className="text-[#005948] text-[14px] font-medium">
+                <p className="text-[#005948] text-[16px] font-regular">
                   Featured
                 </p>
               </div>
@@ -46,12 +46,15 @@ const KnowledgeCenter: React.FC = () => {
 
           </div>
 
-          {/* Right Image */}
+          {/* Right Media */}
           <div className="h-full rounded-[10px] overflow-hidden">
-            <img
-              src={featuredImg}
-              alt="Featured Hybrids"
+            <video
+              src={featuredVideo}
               className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
             />
           </div>
 

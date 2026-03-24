@@ -4,7 +4,6 @@ import Container from '../common/Container';
 import locationIcon from '../../assets/images/location.svg';
 import callIcon from '../../assets/images/call.svg';
 import emailIcon from '../../assets/images/email.svg';
-import btnIcon from '../../assets/images/apme_symbol-white.svg';
 import SchedualIcon from '../../assets/images/schedual.svg';
 import ad1 from '../../assets/images/ad1.svg';
 import ad2 from '../../assets/images/ad2.svg';
@@ -45,7 +44,7 @@ const ContactContent: React.FC = () => {
     });
   };
 
-  const inputClass = "w-full bg-white rounded-[6px] px-[22px] py-[18px] text-[14px] leading-[120%] tracking-[0.011em] text-[#333333] focus:outline-none focus:ring-1 focus:ring-[#005948] peer";
+  const inputClass = "w-full bg-[#FAF9F6] rounded-[6px] px-[22px] py-[18px] text-[14px] leading-[120%] tracking-[0.011em] text-[#333333] focus:outline-none focus:ring-1 focus:ring-[#005948] peer";
   const labelClass = "absolute left-[22px] top-1/2 -translate-y-1/2 text-[#6C6C6C] text-[14px] leading-[120%] tracking-[0.011em] pointer-events-none opacity-0 peer-placeholder-shown:opacity-100 transition-opacity";
   const textareaLabelClass = "absolute left-[22px] top-[18px] text-[#6C6C6C] text-[14px] leading-[120%] tracking-[0.011em] pointer-events-none opacity-0 peer-placeholder-shown:opacity-100 transition-opacity";
 
@@ -182,7 +181,7 @@ const ContactContent: React.FC = () => {
                   className="self-start flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold leading-[120%] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
                 >
                   {isSubmitting ? 'Sending...' : 'Get in Touch Today'}
-                  {!isSubmitting && <img src={btnIcon} alt="icon" className="w-[18px] h-[18px]" />}
+                  {!isSubmitting && <img src={btnIcon2} alt="icon" className="w-[18px] h-[18px]" />}
                 </button>
               </form>
             )}
@@ -192,27 +191,27 @@ const ContactContent: React.FC = () => {
     </section>
 
     {/* Crop Advisory Section */}
-    <section className="py-[60px] md:py-[100px] bg-[#FAF9F6]">
+    <section className="py-[50px] md:py-[80px] mx-[16px] lg:mx-[20px] bg-[#F2F4F0]">
       <Container>
         <div className="text-center max-w-[800px] mx-auto mb-[40px] md:mb-[60px]">
-          <h2 className="text-[#1F1F1F] text-[28px] md:text-[42px] font-medium mb-4">
+          <h2 className="text-[#1F1F1F] text-[28px] md:text-[42px] font-medium mb-5">
             Crop Advisory and Technical Assistance
           </h2>
-          <p className="text-[#4A4A4A] text-[16px] md:text-[18px]">
+          <p className="text-[#333333] text-[16px]">
             Our team provides guidance to help you select the right hybrid and improve crop performance
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-[40px] md:mb-[60px]">
           {/* Card 1 */}
-          <div className="bg-white p-[30px] md:p-[40px] rounded-[10px] shadow-sm border border-black/5 flex flex-col items-center text-center">
-            <div className="w-[60px] h-[60px] md:w-[84px] md:h-[84px] flex items-center justify-center mb-6">
+          <div className="bg-[#FAF9F6] p-[20px] md:p-[24px] rounded-[10px] border border-black/5 flex flex-col items-center text-center">
+            <div className="w-[60px] h-[60px] flex items-center justify-center mb-5">
               <img src={ad1} alt="Product Selection" className="w-full h-full object-contain" />
             </div>
-            <h4 className="text-[#1F1F1F] text-[20px] md:text-[24px] font-medium mb-3">
+            <h4 className="text-[#1F1F1F] text-[20px] md:text-[22px] font-medium mb-3">
               Product<br />Selection Guidance
             </h4>
-            <p className="text-[#4A4A4A] text-[14px] md:text-[16px] leading-[1.5]">
+            <p className="text-[#333333] text-[14px] md:text-[16px] leading-[1.1]">
               Assistance in choosing hybrids suitable for your region and season.
             </p>
           </div>

@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
               Welcome To Our Plantech
             </p>
           </div>
-          <h1 className="text-white mb-6 leading-[1.2] md:leading-[1.2] text-[34px] md:text-6xl tracking-[0.011em]">
+          <h1 className="text-white mb-6 leading-[1.2] md:leading-[1.2] text-[34px] md:text-[56px] tracking-[0.011em]">
             Hybrid Vegetable Seeds <br className="hidden md:block" />
             Built for Higher Yield & <br className="hidden md:block" />
             Stronger Performance

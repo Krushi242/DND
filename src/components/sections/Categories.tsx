@@ -73,7 +73,7 @@ const Categories: React.FC = () => {
         <div className="text-center mb-10 md:mb-16">
           <div className="flex items-center justify-center gap-2 mb-4">
             <img src={icon} className="w-[16px] h-[16px]" />
-            <p className="text-[#005948] text-[16px] font-medium">
+            <p className="text-[#005948] text-[16px] font-regular">
               Our Product Categories
             </p>
           </div>

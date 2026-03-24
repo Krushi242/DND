@@ -17,7 +17,7 @@ const About: React.FC = () => {
           {/* Tag */}
           <div className="flex items-center gap-2 mb-4">
             <img src={icon} alt="icon" className="w-[16px] h-[16px]" />
-            <p className="text-[#005948] text-[16px] font-medium">
+            <p className="text-[#005948] text-[16px] font-regular">
               About DRD Plantech
             </p>
           </div>

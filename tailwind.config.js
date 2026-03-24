@@ -33,6 +33,7 @@ export default {
       },
       maxWidth: {
         '1200': '1200px',
+        '1440': '1440px',
       },
       lineHeight: {
         '1.2': '1.2',

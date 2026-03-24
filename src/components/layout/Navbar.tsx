@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Container from '../common/Container';
 import Button from '../common/Button';
-import logo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/new-logo.jpg';
 import icon from '../../assets/images/symbol 1.svg';
 
 const Navbar: React.FC = () => {
@@ -22,15 +22,15 @@ const Navbar: React.FC = () => {
     {
       name: 'Products',
       dropdown: [
-        { name: 'Vegetable Seeds', href: '#' }, // href: '/product-1'
-        { name: 'Field Crop Seeds', href: '#' }, // href: '/product-2'
+        { name: 'Vegetable Seeds', href: '/product-1' }, // href: '/product-1'
+        { name: 'Field Crop Seeds', href: '/product-2' }, // href: '/product-2'
       ],
     },
     {
       name: 'Media',
       dropdown: [
-        { name: 'News', href: '#' },
-        { name: 'Blogs', href: '#' },
+        { name: 'News', href: '/news' },
+        { name: 'Blogs', href: '/blogs' },
       ],
     },
   ];
@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className={`sticky bg-[#FAF9F6] top-0 left-0 right-0 z-50 transition-all duration-300 h-[80px] md:h-[138px] flex items-center`}>
+    <nav className={`sticky bg-[#FAF9F6] top-0 left-0 right-0 z-50 transition-all duration-300 h-[80px] md:h-[110px] flex items-center`}>
       
       <Container className="flex items-center justify-between h-full">
         
@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-4 lg:gap-8 h-full">
+        <div className="hidden md:flex items-center h-full">
           {navLinks.map((link) => (
             <div key={link.name} className="relative group h-full flex items-center z-10">
               
@@ -67,10 +67,10 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center cursor-pointer h-full px-4 lg:px-6 z-10 transition-all duration-300">
                   {/* Active Background Tab */}
                   {(isActive(link.href) || isDropdownActive(link.dropdown)) && (
-                    <div className="absolute top-0 left-0 right-0 h-[80px] md:h-[105px] bg-[#005948] rounded-b-[12px] -z-10 shadow-md"></div>
+                    <div className="absolute top-0 left-0 right-0 h-[80px] md:h-[90px] bg-[#005948] rounded-b-[12px] -z-10 shadow-md"></div>
                   )}
                   <span
-                    className={`flex items-center gap-1 text-[18px] font-medium transition-all duration-300 ${
+                    className={`flex items-center gap-1 text-[16px] font-regular transition-all duration-300 ${
                       isActive(link.href) || isDropdownActive(link.dropdown)
                         ? 'text-white border-b-[2px] border-white pb-[2px]'
                         : 'text-[#333] hover:text-[#F26A21] hover:-translate-y-0.5'
@@ -87,10 +87,10 @@ const Navbar: React.FC = () => {
                 >
                   {/* Active Background Tab */}
                   {isActive(link.href) && (
-                    <div className="absolute top-0 left-0 right-0 h-[80px] md:h-[105px] bg-[#005948] rounded-b-[12px] -z-10 shadow-md"></div>
+                    <div className="absolute top-0 left-0 right-0 h-[80px] md:h-[90px] bg-[#005948] rounded-b-[12px] -z-10 shadow-md"></div>
                   )}
                   <span
-                    className={`text-[18px] font-medium transition-all duration-300 inline-block ${
+                    className={`text-[16px] font-regular transition-all duration-300 inline-block ${
                       isActive(link.href)
                         ? 'text-white border-b-[2px] border-white pb-[2px]'
                         : 'text-[#333] hover:text-[#F26A21] hover:-translate-y-0.5'
@@ -103,7 +103,7 @@ const Navbar: React.FC = () => {
 
               {/* Dropdown */}
               {link.dropdown && (
-                <div className="absolute left-0 top-[70%] hidden group-hover:block z-[100]">
+                <div className="absolute left-0 top-[100px] hidden group-hover:block z-[100]">
                   <div className="bg-white shadow-lg rounded-b-md py-3 min-w-[180px] border-t-2 border-[#005948] overflow-hidden">
                     {link.dropdown.map((item) => (
                       <Link
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
           ))}
 
           {/* Contact Button */}
-          <Link to="/contact">
+          <Link to="/contact" className="ml-[20px]">
             <Button
               variant="primary"
               size="sm"

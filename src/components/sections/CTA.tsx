@@ -33,7 +33,7 @@ const CTA: React.FC<CTAProps> = ({
           {tagText && (
             <div className="flex items-center gap-2 mb-4">
               <img src={iconWhite} alt="icon" className="w-[16px] h-[16px]" />
-              <p className="text-white text-[16px] font-medium">
+              <p className="text-white text-[16px] font-regular">
                 {tagText}
               </p>
             </div>
