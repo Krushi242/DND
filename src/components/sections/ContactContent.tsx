@@ -25,9 +25,50 @@ const ContactContent: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formState.email) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(formState.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Phone validation (10 digits)
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!formState.phone) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!phoneRegex.test(formState.phone.replace(/[^0-9]/g, ''))) {
+      newErrors.phone = 'Please enter a valid 10-digit phone number';
+    }
+
+    // City validation
+    if (!formState.city.trim()) {
+      newErrors.city = 'City/Location is required';
+    }
+
+    // Name validation
+    if (!formState.name.trim()) {
+      newErrors.name = 'Full name is required';
+    }
+
+    // Message validation
+    if (!formState.message.trim()) {
+      newErrors.message = 'Message is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+    
     setIsSubmitting(true);
     
     try {
@@ -146,19 +187,22 @@ const ContactContent: React.FC = () => {
               <form onSubmit={handleSubmit} className="flex flex-col gap-[20px]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                   <div className="relative">
-                    <input required type="text" name="name" value={formState.name} onChange={handleChange} placeholder=" " className={inputClass} />
+                    <input required type="text" name="name" value={formState.name} onChange={handleChange} placeholder=" " className={`${inputClass} ${errors.name ? 'ring-1 ring-red-500' : ''}`} />
                     <label className={labelClass}>Full Name <span className="text-[#F26A21]">*</span></label>
+                    {errors.name && <span className="text-red-500 text-[11px] mt-1 ml-1">{errors.name}</span>}
                   </div>
                   <div className="relative">
-                    <input required type="tel" name="phone" value={formState.phone} onChange={handleChange} placeholder=" " className={inputClass} />
+                    <input required type="tel" name="phone" value={formState.phone} onChange={handleChange} placeholder=" " className={`${inputClass} ${errors.phone ? 'ring-1 ring-red-500' : ''}`} />
                     <label className={labelClass}>Phone Number <span className="text-[#F26A21]">*</span></label>
+                    {errors.phone && <span className="text-red-500 text-[11px] mt-1 ml-1">{errors.phone}</span>}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                   <div className="relative">
-                    <input required type="email" name="email" value={formState.email} onChange={handleChange} placeholder=" " className={inputClass} />
+                    <input required type="email" name="email" value={formState.email} onChange={handleChange} placeholder=" " className={`${inputClass} ${errors.email ? 'ring-1 ring-red-500' : ''}`} />
                     <label className={labelClass}>Email Address <span className="text-[#F26A21]">*</span></label>
+                    {errors.email && <span className="text-red-500 text-[11px] mt-1 ml-1">{errors.email}</span>}
                   </div>
                   <div className="relative">
                     <input required type="text" name="company" value={formState.company} onChange={handleChange} placeholder=" " className={inputClass} />
@@ -168,8 +212,9 @@ const ContactContent: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                   <div className="relative">
-                    <input required type="text" name="city" value={formState.city} onChange={handleChange} placeholder=" " className={inputClass} />
+                    <input required type="text" name="city" value={formState.city} onChange={handleChange} placeholder=" " className={`${inputClass} ${errors.city ? 'ring-1 ring-red-500' : ''}`} />
                     <label className={labelClass}>City/Location <span className="text-[#F26A21]">*</span></label>
+                    {errors.city && <span className="text-red-500 text-[11px] mt-1 ml-1">{errors.city}</span>}
                   </div>
                   <div className="relative">
                     <select required name="inquiry_type" value={formState.inquiry_type} onChange={handleChange} className={`${inputClass} appearance-none cursor-pointer`}>
@@ -191,8 +236,9 @@ const ContactContent: React.FC = () => {
                 </div>
 
                 <div className="relative mb-[14px]">
-                  <textarea required name="message" value={formState.message} onChange={handleChange} rows={4} placeholder=" " className={`${inputClass} resize-none min-h-[72px]`} />
+                  <textarea required name="message" value={formState.message} onChange={handleChange} rows={4} placeholder=" " className={`${inputClass} resize-none min-h-[72px] ${errors.message ? 'ring-1 ring-red-500' : ''}`} />
                   <label className={textareaLabelClass}>Message <span className="text-[#F26A21]">*</span></label>
+                  {errors.message && <span className="text-red-500 text-[11px] mt-1 ml-1">{errors.message}</span>}
                 </div>
 
                 <button
