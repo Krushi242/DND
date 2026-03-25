@@ -1,5 +1,9 @@
 {
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://dnd-backend-swart.vercel.app/api/$1"
+    },
     { "source": "/(.*)", "destination": "/" }
   ]
 }

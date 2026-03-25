@@ -1,9 +1,11 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { SpeedInsights } from "@vercel/speed-insights/react";
+
+// Components
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
-import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -23,11 +25,13 @@ const AppContent: React.FC = () => {
     <div className={`min-h-screen selection:text-accent ${isAdminPage ? 'bg-white' : 'bg-[#FAF9F6]'}`}>
       {!isAdminPage && <Navbar />}
       <main>
-        <Suspense fallback={
-          <div className="flex items-center justify-center min-h-[60vh]">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005948]"></div>
-          </div>
-        }>
+        <Suspense 
+          fallback={
+            <div className="flex items-center justify-center min-h-[60vh]">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005948]"></div>
+            </div>
+          }
+        >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -41,7 +45,7 @@ const AppContent: React.FC = () => {
         </Suspense>
       </main>
       {!isAdminPage && <Footer />}
-      <SpeedInsights/>
+      <SpeedInsights />
     </div>
   );
 };
@@ -54,6 +58,5 @@ const App: React.FC = () => {
     </Router>
   );
 };
-
 
 export default App;
