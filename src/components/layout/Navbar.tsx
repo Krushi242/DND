@@ -29,8 +29,8 @@ const Navbar: React.FC = () => {
     {
       name: 'Media',
       dropdown: [
-        { name: 'News', href: '/news' },
-        { name: 'Blogs', href: '/blogs' },
+        { name: 'Gallery', href: '/gallery' },
+        { name: 'Videos', href: '/videos' },
       ],
     },
   ];

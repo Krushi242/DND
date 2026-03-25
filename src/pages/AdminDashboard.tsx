@@ -22,11 +22,7 @@ const AdminDashboard: React.FC = () => {
   const fetchContacts = async () => {
     setLoading(true);
     try {
-<<<<<<< HEAD
       const response = await fetch('/api/contacts');
-=======
-      const response = await fetch('http://localhost:5000/api/contacts');
->>>>>>> 86bd339a09a5375e5fd3cab7fdbf9da808dd55be
       if (!response.ok) throw new Error('Failed to fetch data');
       const data = await response.json();
       setContacts(data);
@@ -93,11 +89,7 @@ const AdminDashboard: React.FC = () => {
     <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-12 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-<<<<<<< HEAD
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
-=======
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
->>>>>>> 86bd339a09a5375e5fd3cab7fdbf9da808dd55be
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#1E293B] flex items-center gap-3">
               Admin Dashboard

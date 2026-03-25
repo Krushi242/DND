@@ -12,6 +12,8 @@ const Product1 = lazy(() => import('./pages/Product1'));
 const Product2 = lazy(() => import('./pages/Product2'));
 const Contact = lazy(() => import('./pages/Contact'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const Videos = lazy(() => import('./pages/Videos'));
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -33,6 +35,8 @@ const AppContent: React.FC = () => {
             <Route path="/field-crop-seeds" element={<Product2 />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/videos" element={<Videos />} />
           </Routes>
         </Suspense>
       </main>

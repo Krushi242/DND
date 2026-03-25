@@ -11,10 +11,7 @@
   },
   "dependencies": {
     "@vercel/speed-insights": "^2.0.0",
-<<<<<<< HEAD
     "dotenv": "^17.3.1",
-=======
->>>>>>> 86bd339a09a5375e5fd3cab7fdbf9da808dd55be
     "lucide-react": "^0.577.0",
     "mysql2": "^3.20.0",
     "react": "^18.3.1",
