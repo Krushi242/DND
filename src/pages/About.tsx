@@ -117,11 +117,12 @@ const AboutPage: React.FC = () => {
 
       {/* Reusable CTA with custom content for the About Page */}
       <CTA 
-        tagText="Become a Dealer Partner"
-        title="Partner With Us"
-        description="Whether you are a farmer seeking high-performance hybrids or a dealer looking to expand your portfolio with reliable seed varieties, DRD Plantech LLP is committed to supporting your growth."
-        buttonText="Apply for Dealership"
-        className="mb-[100px]"
+        tagText="Agricultural Excellence"
+        title="Ready to Transform Your Yield?"
+        description="Our team is dedicated to providing high-quality hybrid seeds and expert guidance to help you achieve your farming goals. Let's work together to grow a more productive and sustainable future."
+        buttonText="Contact for More Information"
+        buttonLink="/contact"
+        className="mb-[60px] md:mb-[100px]"
       />
     </>
   );

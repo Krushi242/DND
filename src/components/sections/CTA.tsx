@@ -4,12 +4,14 @@ import iconWhite from '../../assets/images/apme_symbol-white.svg';
 import ctaBg from '../../assets/images/cta-bg.webp';
 import Button from '../common/Button';
 import icon2 from '../../assets/images/symbol 1.svg';
+import { Link } from 'react-router-dom';
 
 export interface CTAProps {
   tagText?: string;
   title: string;
   description: string;
   buttonText: string;
+  buttonLink?: string;
   className?: string;
   secondaryAction?: React.ReactNode;
 }
@@ -19,6 +21,7 @@ const CTA: React.FC<CTAProps> = ({
   title,
   description,
   buttonText,
+  buttonLink,
   className = '',
   secondaryAction,
 }) => {
@@ -53,10 +56,19 @@ const CTA: React.FC<CTAProps> = ({
 
           {/* Buttons */}
           <div className="flex flex-wrap justify-center gap-4">
-            <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
-              {buttonText}
-              <img src={icon2} alt="icon" className="w-[18px] h-[18px]" />
-            </Button>
+            {buttonLink ? (
+              <Link to={buttonLink}>
+                <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
+                  {buttonText}
+                  <img src={icon2} alt="icon" className="w-[18px] h-[18px]" />
+                </Button>
+              </Link>
+            ) : (
+              <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
+                {buttonText}
+                <img src={icon2} alt="icon" className="w-[18px] h-[18px]" />
+              </Button>
+            )}
             {secondaryAction}
           </div>
 

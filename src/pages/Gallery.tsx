@@ -30,6 +30,8 @@ const galleryImages = [
   { id: 10, src: img10, title: 'Premium Hybrids', category: 'Research' },
 ];
 
+import CTA from '../components/sections/CTA';
+
 const Gallery: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -101,6 +103,15 @@ const Gallery: React.FC = () => {
           </div>
         </Container>
       </section>
+
+      <CTA
+        tagText="Contact Us"
+        title="Ready to grow with us?"
+        description="Contact our team today to learn more about our products or to become a dealer partner."
+        buttonText="Get in touch"
+        buttonLink="/contact"
+        className="mb-[60px] md:mb-[100px]"
+      />
 
       {/* Lightbox Modal */}
       {selectedImage && (

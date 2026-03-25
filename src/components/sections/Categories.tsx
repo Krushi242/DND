@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Container from '../common/Container';
 import Button from '../common/Button';
 import icon from '../../assets/images/apme_symbol-green.svg';
@@ -114,10 +115,12 @@ const Categories: React.FC = () => {
 
         {/* Button */}
         <div className="flex justify-center mt-14">
-          <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
-            View All Varieties
-            <img src={icon2} className="w-[18px] h-[18px]" />
-          </Button>
+          <Link to="/products">
+            <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
+              View All Varieties
+              <img src={icon2} className="w-[18px] h-[18px]" />
+            </Button>
+          </Link>
         </div>
 
       </Container>

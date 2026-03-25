@@ -12,6 +12,7 @@ const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Product1 = lazy(() => import('./pages/Product1'));
 const Product2 = lazy(() => import('./pages/Product2'));
+const Products = lazy(() => import('./pages/Products'));
 const Contact = lazy(() => import('./pages/Contact'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const Gallery = lazy(() => import('./pages/Gallery'));
@@ -37,6 +38,7 @@ const AppContent: React.FC = () => {
             <Route path="/about" element={<About />} />
             <Route path="/vegetable-seeds" element={<Product1 />} />
             <Route path="/field-crop-seeds" element={<Product2 />} />
+            <Route path="/products" element={<Products />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/gallery" element={<Gallery />} />

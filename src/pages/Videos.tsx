@@ -6,6 +6,8 @@ import videoSrc from '../assets/video/futured-video.mp4';
 import videoBg from '../assets/images/hero_bg.webp';
 import icon from '../assets/images/apme_symbol-green.svg';
 
+import CTA from '../components/sections/CTA';
+
 const Videos: React.FC = () => {
   return (
     <>
@@ -79,6 +81,15 @@ const Videos: React.FC = () => {
           </div>
         </Container>
       </section>
+
+      <CTA
+        tagText="Contact Us"
+        title="Ready to grow with us?"
+        description="Contact our team today to learn more about our products or to become a dealer partner."
+        buttonText="Get in touch"
+        buttonLink="/contact"
+        className="mb-[60px] md:mb-[100px]"
+      />
     </>
   );
 };

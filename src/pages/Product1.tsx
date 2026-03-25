@@ -217,6 +217,7 @@ const Product1: React.FC = () => {
         title="Grow Your Business with a Trusted Seed Brand"
         description="We offer strong product demand, reliable supply, and structured dealer support. Join our expanding distribution network and serve the growing agricultural market with confidence."
         buttonText="Apply for Dealership"
+        buttonLink="/contact"
       />
       
       <FAQ />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Container from '../common/Container';
 import aboutImg from '../../assets/images/about.webp';
 import Button from '../common/Button';
@@ -52,10 +53,12 @@ const About: React.FC = () => {
             </p>
 
             {/* Button */}
-            <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
-              Read More
-              <img src={icon2} alt="icon" className="w-[18px] h-[18px]" />
-            </Button>
+            <Link to="/about">
+              <Button className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold">
+                Read More
+                <img src={icon2} alt="icon" className="w-[18px] h-[18px]" />
+              </Button>
+            </Link>
           </div>
 
         </div>

@@ -142,7 +142,7 @@ const ContactContent: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-[#333333] text-[14px] font-medium mb-[6px]">Phone and WhatsApp</p>
-                  <p className="text-[#1F1F1F] font-semibold text-[18px]">+91 79841 09698</p>
+                  <a href="tel:+917984109698" className="text-[#1F1F1F] font-semibold text-[18px] hover:text-[#F26A21] transition-colors">+91 79841 09698</a>
                 </div>
               </div>
 
@@ -152,7 +152,7 @@ const ContactContent: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-[#333333] text-[14px] font-medium mb-[6px]">Email Us</p>
-                  <p className="text-[#1F1F1F] font-semibold text-[18px]">info@drdplantech.com</p>
+                  <a href="mailto:info@drdplantech.com" className="text-[#1F1F1F] font-semibold text-[18px] hover:text-[#F26A21] transition-colors">info@drdplantech.com</a>
                 </div>
               </div>
 
@@ -311,6 +311,7 @@ const ContactContent: React.FC = () => {
 
         <div className="flex justify-center">
           <button
+            onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
             className="flex items-center gap-[8px] md:gap-[10px] px-[18px] py-[14px] md:px-[24px] md:py-[18px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold leading-[120%]"
           >
             Talk to Our Expert

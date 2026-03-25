@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Container from '../common/Container';
 import Button from '../common/Button';
 import heroBg from '../../assets/images/hero_bg.webp';
@@ -36,23 +37,27 @@ const Hero: React.FC = () => {
             Delivering high-performance hybrid vegetable seeds designed for commercial farmers, dealers, and modern agriculture markets. Our varieties are developed for superior yield, disease resistance, uniform quality, and dependable results across seasons.
           </p>
           <div className="flex flex-col sm:flex-row gap-5">
-            <Button
-              variant="secondary"
-              size="lg"
-              className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#F26A21] hover:bg-[#e05a12] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(242,106,33,0.3)] transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold leading-[120%]"
-            >
-              Explore Our Products
-              <img src={icon} alt="icon" className="w-[18px] h-[18px]" />
-            </Button>
-            <Button
-              variant="white"
-              size="lg"
-              className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] !bg-transparent border !border-white text-white hover:!bg-white hover:!text-[#005948] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(255,255,255,0.3)] transition-all duration-300 text-[14px] md:text-[16px] font-semibold leading-[120%] group"
-            >
-              Become a Dealer
-              <img src={icon} alt="icon" className="w-[18px] h-[18px] group-hover:hidden" />
-              <img src={greenIcon} alt="icon" className="w-[18px] h-[18px] hidden group-hover:block" />
-            </Button>
+            <Link to="/products">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] bg-[#F26A21] hover:bg-[#e05a12] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(242,106,33,0.3)] transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold leading-[120%]"
+              >
+                Explore Our Products
+                <img src={icon} alt="icon" className="w-[18px] h-[18px]" />
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button
+                variant="white"
+                size="lg"
+                className="flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[18px] md:py-[17px] rounded-[5px] !bg-transparent border !border-white text-white hover:!bg-white hover:!text-[#005948] hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(255,255,255,0.3)] transition-all duration-300 text-[14px] md:text-[16px] font-semibold leading-[120%] group"
+              >
+                Become a Dealer
+                <img src={icon} alt="icon" className="w-[18px] h-[18px] group-hover:hidden" />
+                <img src={greenIcon} alt="icon" className="w-[18px] h-[18px] hidden group-hover:block" />
+              </Button>
+            </Link>
           </div>
         </div>
       </Container>

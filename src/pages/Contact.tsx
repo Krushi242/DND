@@ -80,6 +80,7 @@ const Contact: React.FC = () => {
           <button
             type="button"
             className="flex items-center gap-[8px] md:gap-[10px] px-[20px] py-[12px] md:px-[25px] md:py-[15px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[16px] font-semibold"
+            onClick={scrollToForm}
           >
             Contact Our Sales Team
             <img src={btnIcon} alt="icon" className="w-[18px] h-[18px]" />
@@ -92,6 +93,7 @@ const Contact: React.FC = () => {
         title="Connect With Our Team Today"
         description="We are committed to providing reliable hybrid vegetable seeds, professional support, and long-term agricultural partnerships. Contact us today to discuss your requirements."
         buttonText="Send Inquiry"
+        buttonLink="#contact-form"
         className="mt-[60px] md:mt-[100px] mb-[60px] md:mb-[100px]"
         secondaryAction={
           <a

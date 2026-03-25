@@ -21,6 +21,7 @@ const Navbar: React.FC = () => {
     { name: 'About', href: '/about' }, // href: '/about'
     {
       name: 'Products',
+      href: '/products',
       dropdown: [
         { name: 'Vegetable Seeds', href: '/vegetable-seeds' },
         { name: 'Field Crop Seeds', href: '/field-crop-seeds' },
@@ -64,21 +65,26 @@ const Navbar: React.FC = () => {
             <div key={link.name} className="relative group h-full flex items-center z-10">
               
               {link.dropdown ? (
-                <div className="flex items-center cursor-pointer h-full px-4 lg:px-6 z-10 transition-all duration-300">
-                  {/* Active Background Tab */}
-                  {(isActive(link.href) || isDropdownActive(link.dropdown)) && (
-                    <div className="absolute top-0 left-0 right-0 h-[80px] md:h-[90px] bg-[#005948] rounded-b-[12px] -z-10 shadow-md"></div>
-                  )}
-                  <span
-                    className={`flex items-center gap-1 text-[16px] font-regular transition-all duration-300 ${
-                      isActive(link.href) || isDropdownActive(link.dropdown)
-                        ? 'text-white border-b-[2px] border-white pb-[2px]'
-                        : 'text-[#333] hover:text-[#F26A21] hover:-translate-y-0.5'
-                    }`}
+                <div className="relative group h-full flex items-center z-10">
+                  <Link 
+                    to={link.href || '#'}
+                    className="flex items-center cursor-pointer h-full px-4 lg:px-6 z-10 transition-all duration-300"
                   >
-                    {link.name}
-                    <span className="text-xs">▼</span>
-                  </span>
+                    {/* Active Background Tab */}
+                    {(isActive(link.href) || isDropdownActive(link.dropdown)) && (
+                      <div className="absolute top-0 left-0 right-0 h-[80px] md:h-[90px] bg-[#005948] rounded-b-[12px] -z-10 shadow-md"></div>
+                    )}
+                    <span
+                      className={`flex items-center gap-1 text-[16px] font-regular transition-all duration-300 ${
+                        isActive(link.href) || isDropdownActive(link.dropdown)
+                          ? 'text-white border-b-[2px] border-white pb-[2px]'
+                          : 'text-[#333] hover:text-[#F26A21] hover:-translate-y-0.5'
+                      }`}
+                    >
+                      {link.name}
+                      <span className="text-xs ml-1">▼</span>
+                    </span>
+                  </Link>
                 </div>
               ) : (
                 <Link 
@@ -155,9 +161,15 @@ const Navbar: React.FC = () => {
             <div key={link.name}>
               
               {link.dropdown ? (
-                <div className="text-lg font-medium text-text py-2 block">
+                <Link 
+                  to={link.href || '#'}
+                  className={`text-lg font-medium py-2 block transition-all duration-300 ${
+                    isActive(link.href) ? 'text-[#0F5D4E]' : 'text-text hover:text-[#F26A21] hover:translate-x-1'
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   {link.name}
-                </div>
+                </Link>
               ) : (
                 <Link 
                   to={link.href || '#'}

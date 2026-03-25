@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Container from '../common/Container';
 import knowledgeImg from '../../assets/images/knowledge.webp';
 import icon from '../../assets/images/apme_symbol-green.svg';
@@ -37,10 +38,12 @@ const Insights: React.FC = () => {
               </div>
 
               <div>
-                <button className="inline-flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[20px] md:py-[16px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[15px] lg:text-[16px] font-semibold">
-                  Visit Knowledge Center
-                  <img src={btnIcon} alt="icon" className="w-[18px] h-[18px]" />
-                </button>
+                <Link to="/products">
+                  <button className="inline-flex items-center gap-[8px] md:gap-[10px] px-[14px] py-[12px] md:px-[20px] md:py-[16px] rounded-[5px] bg-[#005948] hover:bg-[#004a3b] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-white text-[14px] md:text-[15px] lg:text-[16px] font-semibold">
+                    Visit Knowledge Center
+                    <img src={btnIcon} alt="icon" className="w-[18px] h-[18px]" />
+                  </button>
+                </Link>
               </div>
             </div>
 

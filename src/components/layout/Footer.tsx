@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Container from '../common/Container';
 import logo from '../../assets/images/logo.svg';
 import locationIcon from '../../assets/images/location.svg';
@@ -40,14 +41,10 @@ const Footer: React.FC = () => {
           <div className="flex flex-col col-span-1">
             <h4 className="text-[20px] font-medium text-white mb-6">Quick Links</h4>
             <ul className="space-y-[8px] text-[16px]">
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Home</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">About Us</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Products</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Research & Innovation</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Why Choose Us</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Knowledge Center</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Dealer / Distributor</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Contact Us</a></li>
+              <li><Link to="/" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Home</Link></li>
+              <li><Link to="/about" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">About Us</Link></li>
+              <li><Link to="/products" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Products</Link></li>
+              <li><Link to="/contact" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -55,16 +52,8 @@ const Footer: React.FC = () => {
           <div className="flex flex-col col-span-1">
             <h4 className="text-[20px] font-medium text-white mb-6">Our Product</h4>
             <ul className="space-y-[8px] text-[16px]">
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Okra Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Watermelon Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Muskmelon Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Bitter Gourd Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Bottle Gourd Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Chilli Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Tomato Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Cucumber Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Cluster Bean Seeds</a></li>
-              <li><a href="#" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Beans Seeds</a></li>
+              <li><Link to="/vegetable-seeds" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Vegetable Seeds</Link></li>
+              <li><Link to="/field-crop-seeds" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Field Crop Seeds</Link></li>
             </ul>
           </div>
 
@@ -82,13 +71,13 @@ const Footer: React.FC = () => {
                 <div className="w-[24px] flex justify-center shrink-0">
                   <img src={callIcon} alt="Phone" className="w-[18px] h-[18px]" />
                 </div>
-                <span className="font-medium">+91 79841 09698</span>
+                <a href="tel:+917984109698" className="font-medium hover:text-[#F26A21] transition-colors">+91 79841 09698</a>
               </li>
               <li className="flex items-center gap-[10px]">
                 <div className="w-[24px] flex justify-center shrink-0">
                   <img src={mailIcon} alt="Email" className="w-[20px] h-[16px]" />
                 </div>
-                <span className="font-medium">info@drdplantech.com</span>
+                <a href="mailto:info@drdplantech.com" className="font-medium hover:text-[#F26A21] transition-colors">info@drdplantech.com</a>
               </li>
             </ul>
           </div>
