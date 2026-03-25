@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://dnd-backend-swart.vercel.app/api/$1"
+      "destination": "https://dnd-backend-seven.vercel.app/api/$1"
     },
     { "source": "/(.*)", "destination": "/" }
   ]
