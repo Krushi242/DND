@@ -28,6 +28,8 @@ const Contact: React.FC = () => {
         title="Contact Us"
         description="Get in touch with our team for product inquiries, dealership opportunities, bulk orders, and crop advisory support. We are committed to providing prompt, professional assistance to farmers, dealers, and agricultural partners."
         backgroundImage={aboutBg}
+        className="min-h-[380px] h-auto md:h-[467px]"
+        contentClassName="py-[32px] md:py-0"
         actions={
           <>
             <button

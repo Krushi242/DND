@@ -6,18 +6,27 @@ interface PageBannerProps {
   description?: string;
   actions?: React.ReactNode;
   backgroundImage?: string;
+  className?: string;
+  contentClassName?: string;
 }
 
-const PageBanner: React.FC<PageBannerProps> = ({ title, description, actions, backgroundImage }) => {
+const PageBanner: React.FC<PageBannerProps> = ({
+  title,
+  description,
+  actions,
+  backgroundImage,
+  className = '',
+  contentClassName = '',
+}) => {
   return (
     <section 
-      className="mx-[16px] md:mx-[20px] rounded-[10px] bg-[#0F5D4E] relative overflow-hidden h-[300px] md:h-[467px] flex items-center bg-cover bg-center"
+      className={`mx-[16px] md:mx-[20px] rounded-[10px] bg-[#0F5D4E] relative overflow-hidden h-[300px] md:h-[467px] flex items-center bg-cover bg-center ${className}`}
       style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : {}}
     >
       {/* No overlay for background image */}
       {/* Text Content */}
       <Container size="wide" className="h-full relative z-10 flex items-center w-full">
-        <div className="max-w-3xl">
+        <div className={`max-w-3xl ${contentClassName}`}>
           <h1 className="text-white text-[34px] md:text-[56px] font-medium tracking-[0.011em] leading-[1.2]">
             {title}
           </h1>
