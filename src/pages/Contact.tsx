@@ -22,7 +22,6 @@ const Contact: React.FC = () => {
         title="Contact Us"
         description="Get in touch with DRD Plantech LLP for product inquiries, dealership opportunities, and agricultural support."
         path="/contact"
-        preloadImage={aboutBg}
       />
       <PageBanner
         title="Contact Us"
