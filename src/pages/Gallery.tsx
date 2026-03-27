@@ -68,7 +68,7 @@ const Gallery: React.FC = () => {
             <div className="mx-auto max-w-3xl rounded-[18px] border border-[#E5E7EB] bg-white px-6 py-14 text-center shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
               <h3 className="text-[24px] font-medium text-[#1F1F1F] md:text-[28px]">Gallery Coming Soon</h3>
               <p className="mx-auto mt-4 max-w-2xl text-[16px] leading-7 text-[#5F6B6D]">
-                No gallery items are available right now. Once media is added from the admin panel and saved in the database, it will appear here automatically.
+                No gallery items are available right now.
               </p>
             </div>
           ) : (

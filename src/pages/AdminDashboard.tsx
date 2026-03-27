@@ -4,10 +4,13 @@ import AdminContactsSection from '../components/admin/AdminContactsSection';
 import AdminGallerySection from '../components/admin/AdminGallerySection';
 import AdminOverview from '../components/admin/AdminOverview';
 import AdminSidebar from '../components/admin/AdminSidebar';
+import AdminVideosSection from '../components/admin/AdminVideosSection';
 import type { AdminSection, Contact } from '../components/admin/types';
 import { getApiUrl } from '../utils/api';
 import { createGalleryItem, getGalleryItems, removeGalleryItem } from '../utils/gallery';
 import type { GalleryItem } from '../utils/gallery';
+import { createVideoItem, getVideoItems, removeVideoItem } from '../utils/videos';
+import type { VideoItem } from '../utils/videos';
 
 const optimizeGalleryImage = (file: File) =>
   new Promise<string>((resolve, reject) => {
@@ -48,21 +51,46 @@ const optimizeGalleryImage = (file: File) =>
     image.src = objectUrl;
   });
 
+const readVideoFile = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+        return;
+      }
+
+      reject(new Error('Unable to read the selected video.'));
+    };
+
+    reader.onerror = () => {
+      reject(new Error('Unable to read the selected video.'));
+    };
+
+    reader.readAsDataURL(file);
+  });
+
 const AdminDashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState<AdminSection>('overview');
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [videoItems, setVideoItems] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [galleryError, setGalleryError] = useState<string | null>(null);
+  const [videoError, setVideoError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<GalleryItem | null>(null);
+  const [deleteVideoTarget, setDeleteVideoTarget] = useState<VideoItem | null>(null);
   const [galleryForm, setGalleryForm] = useState({
     title: '',
     category: '',
     src: '',
   });
+  const [videoSrc, setVideoSrc] = useState('');
 
   const inquiryTypeLabels: Record<string, string> = {
     sales: 'Sales & Dealership',
@@ -104,9 +132,20 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const fetchVideos = async () => {
+    try {
+      const items = await getVideoItems();
+      setVideoItems(items);
+      setVideoError(null);
+    } catch (err: any) {
+      setVideoError(err.message || 'Unable to load videos.');
+    }
+  };
+
   useEffect(() => {
     fetchContacts();
     fetchGallery();
+    fetchVideos();
   }, []);
 
   const filteredContacts =
@@ -184,6 +223,46 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const addVideoItem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setVideoError(null);
+
+    if (!videoSrc.trim()) {
+      setVideoError('Please choose a video before saving.');
+      return;
+    }
+
+    try {
+      const createdItem = await createVideoItem(videoSrc.trim());
+
+      if (createdItem) {
+        setVideoItems((prev) => [createdItem, ...prev]);
+      } else {
+        await fetchVideos();
+      }
+
+      setVideoSrc('');
+      setIsVideoModalOpen(false);
+    } catch (err: any) {
+      setVideoError(err.message || 'Unable to save video.');
+    }
+  };
+
+  const deleteVideoItem = async () => {
+    if (!deleteVideoTarget) {
+      return;
+    }
+
+    try {
+      await removeVideoItem(deleteVideoTarget.id);
+      setVideoItems((prev) => prev.filter((item) => item.id !== deleteVideoTarget.id));
+      setDeleteVideoTarget(null);
+      setVideoError(null);
+    } catch (err: any) {
+      setVideoError(err.message || 'Unable to delete video.');
+    }
+  };
+
   const downloadCSV = () => {
     const headers = ['ID', 'Name', 'Phone', 'Email', 'Company', 'City', 'Inquiry Type', 'Message', 'Date'];
     const csvContent = [
@@ -238,6 +317,7 @@ const AdminDashboard: React.FC = () => {
           onSectionChange={setActiveSection}
           contactsCount={contacts.length}
           galleryCount={galleryItems.length}
+          videosCount={videoItems.length}
         />
 
         <main className="p-4 md:p-6 xl:px-10 xl:py-10">
@@ -252,7 +332,7 @@ const AdminDashboard: React.FC = () => {
                     </span>
                   </div>
                   <p className="mt-3 max-w-xl text-[15px] leading-7 text-[#5B6B82]">
-                    Manage incoming inquiries, review lead quality, and update gallery items that appear on the public website.
+                    Manage incoming inquiries, review lead quality, and update gallery and video content that appears on the public website.
                   </p>
                 </div>
 
@@ -297,7 +377,7 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
 
-            {activeSection !== 'gallery' && (
+            {(activeSection === 'overview' || activeSection === 'contacts') && (
               <div className="mb-6 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
                 <div className="rounded-[10px] border border-[#DDE7E3] bg-white p-6">
                   <p className="text-sm font-medium text-[#64748B]">Total Inquiries</p>
@@ -362,6 +442,42 @@ const AdminDashboard: React.FC = () => {
                   setGalleryForm({ title: '', category: '', src: '' });
                 }}
                 onCloseDeleteModal={() => setDeleteTarget(null)}
+              />
+            )}
+
+            {activeSection === 'videos' && (
+              <AdminVideosSection
+                videoItems={videoItems}
+                videoSrc={videoSrc}
+                videoError={videoError}
+                isAddModalOpen={isVideoModalOpen}
+                deleteTarget={deleteVideoTarget}
+                onFileChange={async (e) => {
+                  const file = e.target.files?.[0];
+
+                  if (!file) {
+                    return;
+                  }
+
+                  setVideoError(null);
+
+                  try {
+                    const nextVideoSrc = await readVideoFile(file);
+                    setVideoSrc(nextVideoSrc);
+                  } catch (err: any) {
+                    setVideoError(err.message || 'Unable to read the selected video.');
+                  }
+                }}
+                onSubmit={addVideoItem}
+                onOpenModal={() => setIsVideoModalOpen(true)}
+                onCloseModal={() => {
+                  setIsVideoModalOpen(false);
+                  setVideoError(null);
+                  setVideoSrc('');
+                }}
+                onRequestDelete={setDeleteVideoTarget}
+                onConfirmDelete={deleteVideoItem}
+                onCloseDeleteModal={() => setDeleteVideoTarget(null)}
               />
             )}
 

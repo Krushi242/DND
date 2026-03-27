@@ -10,4 +10,4 @@ export interface Contact {
   created_at: string;
 }
 
-export type AdminSection = 'overview' | 'contacts' | 'gallery';
+export type AdminSection = 'overview' | 'contacts' | 'gallery' | 'videos';

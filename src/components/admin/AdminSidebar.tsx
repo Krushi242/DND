@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink, FolderKanban, Inbox, LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
+import { ExternalLink, FolderKanban, Inbox, LayoutDashboard, LogOut, Menu, PlaySquare, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/logo.svg';
 import type { AdminSection } from './types';
@@ -10,12 +10,14 @@ interface AdminSidebarProps {
   onSectionChange: (section: AdminSection) => void;
   contactsCount: number;
   galleryCount: number;
+  videosCount: number;
 }
 
 const navItems = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'contacts', label: 'Contacts', icon: Inbox },
   { id: 'gallery', label: 'Gallery', icon: FolderKanban },
+  { id: 'videos', label: 'Videos', icon: PlaySquare },
 ] as const;
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({
@@ -23,6 +25,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onSectionChange,
   contactsCount,
   galleryCount,
+  videosCount,
 }) => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -85,6 +88,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                     ? contactsCount
                     : item.id === 'gallery'
                       ? galleryCount
+                      : item.id === 'videos'
+                        ? videosCount
                       : undefined;
 
                 return (
@@ -114,15 +119,15 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           <div className="mt-6 rounded-[10px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.10),rgba(255,255,255,0.03))] p-4 sm:mt-8 xl:mt-10">
             <p className="text-sm font-semibold">Quick Notes</p>
             <p className="mt-2 text-sm leading-6 text-white/72">
-              Review fresh leads, switch between sections quickly, and manage media content for the public gallery.
+              Review fresh leads, switch between sections quickly, and manage media content for the public gallery and video pages.
             </p>
             <a
-              href="/gallery"
+              href={activeSection === 'videos' ? '/videos' : '/gallery'}
               target="_blank"
               rel="noreferrer"
               className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-white"
             >
-              Open Gallery
+              {activeSection === 'videos' ? 'Open Videos' : 'Open Gallery'}
               <ExternalLink size={14} />
             </a>
           </div>
