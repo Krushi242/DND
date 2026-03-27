@@ -50,7 +50,7 @@ interface AdminProductsSectionProps {
 
 const toolbarButtons: Array<{
   label: string;
-  icon: React.ComponentType<{ size?: number }>;
+  icon: React.ComponentType<{ size?: string | number }>;
   command: string;
   value?: string;
 }> = [

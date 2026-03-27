@@ -49,9 +49,9 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
               return (
                 <div
                   key={index}
-                  className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px] items-stretch"
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px] items-start"
                 >
-                  <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-full ${rowReverse ? 'lg:order-2' : 'lg:order-1'}`}>
+                  <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-[420px] self-start ${rowReverse ? 'lg:order-2' : 'lg:order-1'}`}>
                     {variant.image || image ? (
                       <img
                         src={variant.image || image}
@@ -83,8 +83,8 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
             })}
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px] items-stretch">
-            <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-full ${reverse ? 'lg:order-2' : 'lg:order-1'}`}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px] items-start">
+            <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-[420px] self-start ${reverse ? 'lg:order-2' : 'lg:order-1'}`}>
               {image ? (
                 <img
                   src={image}
