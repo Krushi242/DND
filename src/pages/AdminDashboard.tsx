@@ -51,6 +51,14 @@ const optimizeGalleryImage = (file: File) =>
     image.src = objectUrl;
   });
 
+const fileToBase64 = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
 const AdminDashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState<AdminSection>('overview');
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -214,7 +222,8 @@ const AdminDashboard: React.FC = () => {
     }
 
     try {
-      const createdItem = await createVideoItem(videoFile);
+      const base64Video = await fileToBase64(videoFile);
+      const createdItem = await createVideoItem(base64Video);
 
       if (createdItem) {
         setVideoItems((prev) => [createdItem, ...prev]);
