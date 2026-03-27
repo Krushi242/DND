@@ -15,7 +15,9 @@ const Gallery: React.FC = () => {
 
   useEffect(() => {
     const syncGalleryImages = () => {
-      setGalleryImages(getGalleryItems());
+      void getGalleryItems().then((items) => {
+        setGalleryImages(items);
+      });
     };
 
     syncGalleryImages();

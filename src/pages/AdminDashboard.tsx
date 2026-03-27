@@ -6,7 +6,7 @@ import AdminOverview from '../components/admin/AdminOverview';
 import AdminSidebar from '../components/admin/AdminSidebar';
 import type { AdminSection, Contact } from '../components/admin/types';
 import { getApiUrl } from '../utils/api';
-import { getGalleryItems, saveGalleryItems } from '../utils/gallery';
+import { createGalleryItem, getGalleryItems, removeGalleryItem } from '../utils/gallery';
 import type { GalleryItem } from '../utils/gallery';
 
 const optimizeGalleryImage = (file: File) =>
@@ -94,9 +94,19 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const fetchGallery = async () => {
+    try {
+      const items = await getGalleryItems();
+      setGalleryItems(items);
+      setGalleryError(null);
+    } catch (err: any) {
+      setGalleryError(err.message || 'Unable to load gallery items.');
+    }
+  };
+
   useEffect(() => {
     fetchContacts();
-    setGalleryItems(getGalleryItems());
+    fetchGallery();
   }, []);
 
   const filteredContacts =
@@ -130,7 +140,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const addGalleryItem = (e: React.FormEvent) => {
+  const addGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
     setGalleryError(null);
 
@@ -139,38 +149,39 @@ const AdminDashboard: React.FC = () => {
       return;
     }
 
-    const nextItems = [
-      {
-        id: Date.now(),
+    try {
+      const createdItem = await createGalleryItem({
         title: galleryForm.title.trim(),
         category: galleryForm.category.trim(),
         src: galleryForm.src.trim(),
-      },
-      ...galleryItems,
-    ];
+      });
 
-    setGalleryItems(nextItems);
-    const didSave = saveGalleryItems(nextItems);
+      if (createdItem) {
+        setGalleryItems((prev) => [createdItem, ...prev]);
+      } else {
+        await fetchGallery();
+      }
 
-    if (!didSave) {
-      setGalleryItems(galleryItems);
-      setGalleryError('Image is too large to save. Please choose a smaller image and try again.');
-      return;
+      setGalleryForm({ title: '', category: '', src: '' });
+      setIsGalleryModalOpen(false);
+    } catch (err: any) {
+      setGalleryError(err.message || 'Unable to save gallery item.');
     }
-
-    setGalleryForm({ title: '', category: '', src: '' });
-    setIsGalleryModalOpen(false);
   };
 
-  const deleteGalleryItem = () => {
+  const deleteGalleryItem = async () => {
     if (!deleteTarget) {
       return;
     }
 
-    const nextItems = galleryItems.filter((item) => item.id !== deleteTarget.id);
-    setGalleryItems(nextItems);
-    saveGalleryItems(nextItems);
-    setDeleteTarget(null);
+    try {
+      await removeGalleryItem(deleteTarget.id);
+      setGalleryItems((prev) => prev.filter((item) => item.id !== deleteTarget.id));
+      setDeleteTarget(null);
+      setGalleryError(null);
+    } catch (err: any) {
+      setGalleryError(err.message || 'Unable to delete gallery item.');
+    }
   };
 
   const downloadCSV = () => {
