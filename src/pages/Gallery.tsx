@@ -64,36 +64,45 @@ const Gallery: React.FC = () => {
             </p>
           </div>
 
-          <div className="columns-1 gap-5 sm:columns-2 md:gap-6 lg:columns-3 lg:gap-7">
-            {galleryImages.map((image) => (
-              <div 
-                key={image.id}
-                className="group relative mb-5 break-inside-avoid cursor-pointer overflow-hidden rounded-[18px] bg-transparent transition-all duration-500 hover:-translate-y-1 md:mb-6 lg:mb-7"
-                onClick={() => openLightbox(image.src)}
-              >
-                <img 
-                  src={image.src} 
-                  alt={image.title}
-                  className="h-auto min-h-[240px] w-full max-h-[420px] rounded-[18px] object-cover transition-transform duration-700 group-hover:scale-[1.02] md:min-h-[280px] md:max-h-[460px]"
-                />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 rounded-b-[18px] bg-[linear-gradient(180deg,rgba(9,18,16,0.02)_0%,rgba(9,18,16,0.72)_100%)] p-4 opacity-100 transition-all duration-500 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
-                  <div className="flex items-end justify-between gap-3">
-                    <div className="min-w-0">
-                      <span className="mb-2 inline-flex rounded-full bg-[#F26A21] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white shadow-sm">
-                        {image.category}
-                      </span>
-                      <h3 className="truncate text-lg font-medium text-white md:text-[22px]">
-                        {image.title}
-                      </h3>
-                    </div>
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm">
-                      <ZoomIn size={16} />
+          {galleryImages.length === 0 ? (
+            <div className="mx-auto max-w-3xl rounded-[18px] border border-[#E5E7EB] bg-white px-6 py-14 text-center shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+              <h3 className="text-[24px] font-medium text-[#1F1F1F] md:text-[28px]">Gallery Coming Soon</h3>
+              <p className="mx-auto mt-4 max-w-2xl text-[16px] leading-7 text-[#5F6B6D]">
+                No gallery items are available right now. Once media is added from the admin panel and saved in the database, it will appear here automatically.
+              </p>
+            </div>
+          ) : (
+            <div className="columns-1 gap-5 sm:columns-2 md:gap-6 lg:columns-3 lg:gap-7">
+              {galleryImages.map((image) => (
+                <div 
+                  key={image.id}
+                  className="group relative mb-5 break-inside-avoid cursor-pointer overflow-hidden rounded-[18px] bg-transparent transition-all duration-500 hover:-translate-y-1 md:mb-6 lg:mb-7"
+                  onClick={() => openLightbox(image.src)}
+                >
+                  <img 
+                    src={image.src} 
+                    alt={image.title}
+                    className="h-auto min-h-[240px] w-full max-h-[420px] rounded-[18px] object-cover transition-transform duration-700 group-hover:scale-[1.02] md:min-h-[280px] md:max-h-[460px]"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 rounded-b-[18px] bg-[linear-gradient(180deg,rgba(9,18,16,0.02)_0%,rgba(9,18,16,0.72)_100%)] p-4 opacity-100 transition-all duration-500 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+                    <div className="flex items-end justify-between gap-3">
+                      <div className="min-w-0">
+                        <span className="mb-2 inline-flex rounded-full bg-[#F26A21] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white shadow-sm">
+                          {image.category}
+                        </span>
+                        <h3 className="truncate text-lg font-medium text-white md:text-[22px]">
+                          {image.title}
+                        </h3>
+                      </div>
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm">
+                        <ZoomIn size={16} />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </Container>
       </section>
 
