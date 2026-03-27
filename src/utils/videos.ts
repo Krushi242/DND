@@ -49,16 +49,16 @@ export const getVideoItems = async () => {
   }
 };
 
-export const createVideoItem = async (videoUrl: string) => {
+export const createVideoItem = async (file: File) => {
+  const formData = new FormData();
+  formData.append('video', file);
+
   const response = await fetch(getApiUrl('/api/videos'), {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-    body: JSON.stringify({
-      video_url: videoUrl,
-    }),
+    body: formData,
   });
 
   if (!response.ok) {

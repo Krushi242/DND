@@ -51,26 +51,6 @@ const optimizeGalleryImage = (file: File) =>
     image.src = objectUrl;
   });
 
-const readVideoFile = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        resolve(reader.result);
-        return;
-      }
-
-      reject(new Error('Unable to read the selected video.'));
-    };
-
-    reader.onerror = () => {
-      reject(new Error('Unable to read the selected video.'));
-    };
-
-    reader.readAsDataURL(file);
-  });
-
 const AdminDashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState<AdminSection>('overview');
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -91,6 +71,7 @@ const AdminDashboard: React.FC = () => {
     src: '',
   });
   const [videoSrc, setVideoSrc] = useState('');
+  const [videoFile, setVideoFile] = useState<File | null>(null);
 
   const inquiryTypeLabels: Record<string, string> = {
     sales: 'Sales & Dealership',
@@ -227,13 +208,13 @@ const AdminDashboard: React.FC = () => {
     e.preventDefault();
     setVideoError(null);
 
-    if (!videoSrc.trim()) {
+    if (!videoFile) {
       setVideoError('Please choose a video before saving.');
       return;
     }
 
     try {
-      const createdItem = await createVideoItem(videoSrc.trim());
+      const createdItem = await createVideoItem(videoFile);
 
       if (createdItem) {
         setVideoItems((prev) => [createdItem, ...prev]);
@@ -241,7 +222,11 @@ const AdminDashboard: React.FC = () => {
         await fetchVideos();
       }
 
+      if (videoSrc) {
+        URL.revokeObjectURL(videoSrc);
+      }
       setVideoSrc('');
+      setVideoFile(null);
       setIsVideoModalOpen(false);
     } catch (err: any) {
       setVideoError(err.message || 'Unable to save video.');
@@ -462,7 +447,12 @@ const AdminDashboard: React.FC = () => {
                   setVideoError(null);
 
                   try {
-                    const nextVideoSrc = await readVideoFile(file);
+                    if (videoSrc) {
+                      URL.revokeObjectURL(videoSrc);
+                    }
+
+                    const nextVideoSrc = URL.createObjectURL(file);
+                    setVideoFile(file);
                     setVideoSrc(nextVideoSrc);
                   } catch (err: any) {
                     setVideoError(err.message || 'Unable to read the selected video.');
@@ -471,9 +461,13 @@ const AdminDashboard: React.FC = () => {
                 onSubmit={addVideoItem}
                 onOpenModal={() => setIsVideoModalOpen(true)}
                 onCloseModal={() => {
+                  if (videoSrc) {
+                    URL.revokeObjectURL(videoSrc);
+                  }
                   setIsVideoModalOpen(false);
                   setVideoError(null);
                   setVideoSrc('');
+                  setVideoFile(null);
                 }}
                 onRequestDelete={setDeleteVideoTarget}
                 onConfirmDelete={deleteVideoItem}
