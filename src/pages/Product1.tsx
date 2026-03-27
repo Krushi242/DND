@@ -26,10 +26,10 @@ const Product1: React.FC = () => {
           setProducts(items);
           setError(null);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (isMounted) {
           setProducts([]);
-          setError(err.message || 'Unable to load products.');
+          setError(err instanceof Error ? err.message : 'Unable to load products.');
         }
       } finally {
         if (isMounted) {

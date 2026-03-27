@@ -4,6 +4,6 @@
       "source": "/api/(.*)",
       "destination": "https://dnd-backend-seven.vercel.app/api/$1"
     },
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

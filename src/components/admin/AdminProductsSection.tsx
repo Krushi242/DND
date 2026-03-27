@@ -6,6 +6,7 @@ import {
   AlignRight,
   Bold,
   Boxes,
+  Edit3,
   Italic,
   List,
   ListOrdered,
@@ -32,12 +33,14 @@ interface AdminProductsSectionProps {
   productError: string | null;
   isLoading: boolean;
   isSaving: boolean;
+  isEditing: boolean;
   onProductNameChange: (value: string) => void;
   onVariantFieldChange: (index: number, field: keyof ProductFormVariant, value: string) => void;
   onVariantImageChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   onAddVariant: () => void;
   onRemoveVariant: (index: number) => void;
   onSubmit: (e: React.FormEvent) => void;
+  onRequestEdit: (item: ProductItem) => void;
   onRequestDelete: (item: ProductItem) => void;
   onConfirmDelete: () => void;
   onOpenModal: () => void;
@@ -71,12 +74,14 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
   productError,
   isLoading,
   isSaving,
+  isEditing,
   onProductNameChange,
   onVariantFieldChange,
   onVariantImageChange,
   onAddVariant,
   onRemoveVariant,
   onSubmit,
+  onRequestEdit,
   onRequestDelete,
   onConfirmDelete,
   onOpenModal,
@@ -152,14 +157,24 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
                       <h3 className="text-lg font-semibold text-[#1E293B]">{item.name}</h3>
                       <p className="mt-1 text-sm text-[#64748B]">{item.variants.length} variant blocks</p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => onRequestDelete(item)}
-                      className="inline-flex items-center gap-2 rounded-[10px] border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
-                    >
-                      <Trash2 size={16} />
-                      Delete
-                    </button>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => onRequestEdit(item)}
+                        className="inline-flex items-center gap-2 rounded-[10px] border border-[#D9E2EC] px-3 py-2 text-sm font-medium text-[#475569] transition-colors hover:bg-gray-50"
+                      >
+                        <Edit3 size={16} />
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onRequestDelete(item)}
+                        className="inline-flex items-center gap-2 rounded-[10px] border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+                      >
+                        <Trash2 size={16} />
+                        Delete
+                      </button>
+                    </div>
                   </div>
 
                   <div className="mt-4 grid gap-4 xl:grid-cols-2">
@@ -190,8 +205,10 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
             <div className="flex w-full max-w-[760px] max-h-[min(860px,calc(100vh-3rem))] flex-col overflow-hidden rounded-[10px] border border-[#DDE7E3] bg-white shadow-[0_30px_80px_rgba(15,23,42,0.22)]">
               <div className="flex items-center justify-between border-b border-[#E2E8F0] px-6 py-5">
                 <div>
-                  <h3 className="text-xl font-semibold text-[#1E293B]">Add Product</h3>
-                  <p className="mt-1 text-sm text-[#64748B]">Create one product and add one or more variant content blocks.</p>
+                  <h3 className="text-xl font-semibold text-[#1E293B]">{isEditing ? 'Edit Product' : 'Add Product'}</h3>
+                  <p className="mt-1 text-sm text-[#64748B]">
+                    {isEditing ? 'Update the saved product, add more variants, or remove a single variant.' : 'Create one product and add one or more variant content blocks.'}
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -228,7 +245,7 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
                               className="inline-flex items-center gap-2 rounded-[10px] border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
                             >
                               <Trash2 size={16} />
-                              Remove
+                              Delete Variant
                             </button>
                           ) : null}
                         </div>
@@ -349,7 +366,7 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
                     ) : (
                       <>
                         <Plus size={16} />
-                        Add Product
+                        {isEditing ? 'Update Product' : 'Add Product'}
                       </>
                     )}
                   </button>

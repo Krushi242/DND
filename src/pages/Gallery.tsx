@@ -35,14 +35,25 @@ const Gallery: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Cleanup to ensure overflow is restored when component unmounts
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [selectedImage]);
+
   const openLightbox = (src: string) => {
     setSelectedImage(src);
-    document.body.style.overflow = 'hidden';
   };
 
   const closeLightbox = () => {
     setSelectedImage(null);
-    document.body.style.overflow = 'auto';
   };
 
   return (

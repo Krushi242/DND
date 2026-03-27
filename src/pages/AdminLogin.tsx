@@ -91,8 +91,8 @@ const AdminLogin: React.FC = () => {
       });
 
       navigate(redirectTo, { replace: true });
-    } catch (err: any) {
-      setError(err.message || 'Unable to login right now.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Unable to login right now.');
     } finally {
       setLoading(false);
     }

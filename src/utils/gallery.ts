@@ -9,10 +9,11 @@ export interface GalleryItem {
 
 export const GALLERY_UPDATED_EVENT = 'drd-gallery-updated';
 
-const normalizeGalleryItem = (item: any): GalleryItem | null => {
-  const id = Number(item?.id);
-  const src = item?.image ?? item?.src;
-  const title = item?.title;
+const normalizeGalleryItem = (item: unknown): GalleryItem | null => {
+  const data = item as Record<string, unknown>;
+  const id = Number(data?.id);
+  const src = (data?.image as string) ?? (data?.src as string);
+  const title = data?.title as string;
 
   if (!Number.isFinite(id) || !src || !title) {
     return null;
@@ -22,7 +23,7 @@ const normalizeGalleryItem = (item: any): GalleryItem | null => {
     id,
     src,
     title,
-    category: item?.description?.trim?.() || item?.category?.trim?.() || 'Gallery',
+    category: (data?.description as string)?.trim?.() || (data?.category as string)?.trim?.() || 'Gallery',
   };
 };
 

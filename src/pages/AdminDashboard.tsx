@@ -10,7 +10,7 @@ import type { AdminSection, Contact } from '../components/admin/types';
 import { getApiUrl } from '../utils/api';
 import { createGalleryItem, getGalleryItems, removeGalleryItem } from '../utils/gallery';
 import type { GalleryItem } from '../utils/gallery';
-import { createProductItem, removeProductItem, getProductItems } from '../utils/products';
+import { createProductItem, removeProductItem, getProductItems, updateProductItem } from '../utils/products';
 import type { ProductItem, ProductPayload } from '../utils/products';
 import { createVideoItem, getVideoItems, removeVideoItem } from '../utils/videos';
 import type { VideoItem } from '../utils/videos';
@@ -72,6 +72,7 @@ const AdminDashboard: React.FC = () => {
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<ProductItem | null>(null);
   const [galleryError, setGalleryError] = useState<string | null>(null);
   const [videoError, setVideoError] = useState<string | null>(null);
   const [productError, setProductError] = useState<string | null>(null);
@@ -113,8 +114,8 @@ const AdminDashboard: React.FC = () => {
       const data = await response.json();
       setContacts(data);
       setError(null);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch data');
     } finally {
       setLoading(false);
     }
@@ -126,8 +127,8 @@ const AdminDashboard: React.FC = () => {
       const items = await getGalleryItems();
       setGalleryItems(items);
       setGalleryError(null);
-    } catch (err: any) {
-      setGalleryError(err.message || 'Unable to load gallery items.');
+    } catch (err: unknown) {
+      setGalleryError(err instanceof Error ? err.message : 'Unable to load gallery items.');
     } finally {
       setGalleryLoading(false);
     }
@@ -139,8 +140,8 @@ const AdminDashboard: React.FC = () => {
       const items = await getVideoItems();
       setVideoItems(items);
       setVideoError(null);
-    } catch (err: any) {
-      setVideoError(err.message || 'Unable to load videos.');
+    } catch (err: unknown) {
+      setVideoError(err instanceof Error ? err.message : 'Unable to load videos.');
     } finally {
       setVideoLoading(false);
     }
@@ -152,8 +153,8 @@ const AdminDashboard: React.FC = () => {
       const items = await getProductItems();
       setProductItems(items);
       setProductError(null);
-    } catch (err: any) {
-      setProductError(err.message || 'Unable to load products.');
+    } catch (err: unknown) {
+      setProductError(err instanceof Error ? err.message : 'Unable to load products.');
     } finally {
       setProductLoading(false);
     }
@@ -192,8 +193,8 @@ const AdminDashboard: React.FC = () => {
         ...prev,
         src: optimizedImage,
       }));
-    } catch (err: any) {
-      setGalleryError(err.message || 'Unable to read the selected image.');
+    } catch (err: unknown) {
+      setGalleryError(err instanceof Error ? err.message : 'Unable to read the selected image.');
     }
   };
 
@@ -222,8 +223,8 @@ const AdminDashboard: React.FC = () => {
 
       setGalleryForm({ title: '', category: '', src: '' });
       setIsGalleryModalOpen(false);
-    } catch (err: any) {
-      setGalleryError(err.message || 'Unable to save gallery item.');
+    } catch (err: unknown) {
+      setGalleryError(err instanceof Error ? err.message : 'Unable to save gallery item.');
     } finally {
       setGallerySaving(false);
     }
@@ -239,8 +240,8 @@ const AdminDashboard: React.FC = () => {
       setGalleryItems((prev) => prev.filter((item) => item.id !== deleteTarget.id));
       setDeleteTarget(null);
       setGalleryError(null);
-    } catch (err: any) {
-      setGalleryError(err.message || 'Unable to delete gallery item.');
+    } catch (err: unknown) {
+      setGalleryError(err instanceof Error ? err.message : 'Unable to delete gallery item.');
     }
   };
 
@@ -269,8 +270,8 @@ const AdminDashboard: React.FC = () => {
       setVideoSrc('');
       setVideoFile(null);
       setIsVideoModalOpen(false);
-    } catch (err: any) {
-      setVideoError(err.message || 'Unable to save video.');
+    } catch (err: unknown) {
+      setVideoError(err instanceof Error ? err.message : 'Unable to save video.');
     } finally {
       setVideoSaving(false);
     }
@@ -293,8 +294,8 @@ const AdminDashboard: React.FC = () => {
           variantIndex === index ? { ...variant, image: optimizedImage } : variant
         ),
       }));
-    } catch (err: any) {
-      setProductError(err.message || 'Unable to read the selected image.');
+    } catch (err: unknown) {
+      setProductError(err instanceof Error ? err.message : 'Unable to read the selected image.');
     }
   };
 
@@ -320,24 +321,39 @@ const AdminDashboard: React.FC = () => {
 
     setProductSaving(true);
     try {
-      const createdItem = await createProductItem({
+      const payload = {
         name: productForm.name.trim(),
         variants: cleanedVariants,
-      });
+      };
 
-      if (createdItem) {
-        setProductItems((prev) => [createdItem, ...prev]);
+      if (editingProduct) {
+        const updatedItem = await updateProductItem(editingProduct.id, payload);
+
+        if (updatedItem) {
+          setProductItems((prev) =>
+            prev.map((item) => (item.id === editingProduct.id ? updatedItem : item))
+          );
+        } else {
+          await fetchProducts();
+        }
       } else {
-        await fetchProducts();
+        const createdItem = await createProductItem(payload);
+
+        if (createdItem) {
+          setProductItems((prev) => [createdItem, ...prev]);
+        } else {
+          await fetchProducts();
+        }
       }
 
       setProductForm({
         name: '',
         variants: [{ title: '', image: '', description: '' }],
       });
+      setEditingProduct(null);
       setIsProductModalOpen(false);
-    } catch (err: any) {
-      setProductError(err.message || 'Unable to save product.');
+    } catch (err: unknown) {
+      setProductError(err instanceof Error ? err.message : editingProduct ? 'Unable to update product.' : 'Unable to save product.');
     } finally {
       setProductSaving(false);
     }
@@ -353,8 +369,8 @@ const AdminDashboard: React.FC = () => {
       setProductItems((prev) => prev.filter((item) => item.id !== deleteProductTarget.id));
       setDeleteProductTarget(null);
       setProductError(null);
-    } catch (err: any) {
-      setProductError(err.message || 'Unable to delete product.');
+    } catch (err: unknown) {
+      setProductError(err instanceof Error ? err.message : 'Unable to delete product.');
     }
   };
 
@@ -368,8 +384,8 @@ const AdminDashboard: React.FC = () => {
       setVideoItems((prev) => prev.filter((item) => item.id !== deleteVideoTarget.id));
       setDeleteVideoTarget(null);
       setVideoError(null);
-    } catch (err: any) {
-      setVideoError(err.message || 'Unable to delete video.');
+    } catch (err: unknown) {
+      setVideoError(err instanceof Error ? err.message : 'Unable to delete video.');
     }
   };
 
@@ -649,17 +665,37 @@ const AdminDashboard: React.FC = () => {
                   }));
                 }}
                 onSubmit={addProductItem}
+                onRequestEdit={(item) => {
+                  setProductError(null);
+                  setEditingProduct(item);
+                  setProductForm({
+                    name: item.name,
+                    variants: item.variants.length > 0
+                      ? item.variants.map((variant) => ({
+                          title: variant.title,
+                          image: variant.image,
+                          description: variant.description,
+                        }))
+                      : [{ title: '', image: '', description: '' }],
+                  });
+                  setIsProductModalOpen(true);
+                }}
                 onRequestDelete={setDeleteProductTarget}
                 onConfirmDelete={deleteProductItem}
-                onOpenModal={() => setIsProductModalOpen(true)}
+                onOpenModal={() => {
+                  setEditingProduct(null);
+                  setIsProductModalOpen(true);
+                }}
                 onCloseModal={() => {
                   setIsProductModalOpen(false);
+                  setEditingProduct(null);
                   setProductError(null);
                   setProductForm({
                     name: '',
                     variants: [{ title: '', image: '', description: '' }],
                   });
                 }}
+                isEditing={Boolean(editingProduct)}
                 onCloseDeleteModal={() => setDeleteProductTarget(null)}
               />
             )}

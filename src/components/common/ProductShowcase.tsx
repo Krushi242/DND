@@ -34,7 +34,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
   const hasSeparateVariantImages = variants.length > 1 && variants.every((variant) => Boolean(variant.image || image));
 
   return (
-    <section className={`${sectionPadding} ${outerBg} ${sectionMargin} rounded-[12px] overflow-hidden`}>
+    <section className={`${sectionPadding} ${outerBg} ${sectionMargin} mb-[16px] md:mb-[20px] rounded-[12px] overflow-hidden`}>
       <Container size="wide">
         {/* Title */}
         <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] text-center mb-6 lg:mb-12">
@@ -51,7 +51,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                   key={index}
                   className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px] items-stretch"
                 >
-                  <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-full bg-[#E9EEEA] ${rowReverse ? 'lg:order-2' : 'lg:order-1'}`}>
+                  <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-full ${rowReverse ? 'lg:order-2' : 'lg:order-1'}`}>
                     {variant.image || image ? (
                       <img
                         src={variant.image || image}
@@ -84,7 +84,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[30px] items-stretch">
-            <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-full bg-[#E9EEEA] ${reverse ? 'lg:order-2' : 'lg:order-1'}`}>
+            <div className={`rounded-[12px] overflow-hidden w-full h-[280px] sm:h-[340px] lg:h-full ${reverse ? 'lg:order-2' : 'lg:order-1'}`}>
               {image ? (
                 <img
                   src={image}

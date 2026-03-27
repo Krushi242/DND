@@ -6,10 +6,11 @@ export interface VideoItem {
   createdAt: string;
 }
 
-const normalizeVideoItem = (item: any): VideoItem | null => {
-  const id = Number(item?.id);
-  const videoUrl = item?.video_url ?? item?.videoUrl;
-  const createdAt = item?.created_at ?? item?.createdAt ?? '';
+const normalizeVideoItem = (item: unknown): VideoItem | null => {
+  const data = item as Record<string, unknown>;
+  const id = Number(data?.id);
+  const videoUrl = (data?.video_url as string) ?? (data?.videoUrl as string);
+  const createdAt = (data?.created_at as string) ?? (data?.createdAt as string) ?? '';
 
   if (!Number.isFinite(id) || !videoUrl) {
     return null;

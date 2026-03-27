@@ -25,11 +25,12 @@ export interface ProductPayload {
   variants: ProductVariantPayload[];
 }
 
-const normalizeVariant = (item: any): ProductVariantItem | null => {
-  const id = Number(item?.id);
-  const title = item?.title?.trim?.();
-  const image = item?.image?.trim?.() || '';
-  const description = item?.description?.trim?.() || '';
+const normalizeVariant = (item: unknown): ProductVariantItem | null => {
+  const data = item as Record<string, unknown>;
+  const id = Number(data?.id);
+  const title = (data?.title as string)?.trim?.();
+  const image = (data?.image as string)?.trim?.() || '';
+  const description = (data?.description as string)?.trim?.() || '';
 
   if (!Number.isFinite(id) || !title) {
     return null;
@@ -43,16 +44,17 @@ const normalizeVariant = (item: any): ProductVariantItem | null => {
   };
 };
 
-const normalizeProduct = (item: any): ProductItem | null => {
-  const id = Number(item?.id);
-  const name = item?.name?.trim?.();
-  const createdAt = item?.created_at ?? item?.createdAt ?? '';
-  const rawVariants = Array.isArray(item?.variants)
-    ? item.variants
-    : Array.isArray(item?.product_variants)
-      ? item.product_variants
-      : Array.isArray(item?.items)
-        ? item.items
+const normalizeProduct = (item: unknown): ProductItem | null => {
+  const data = item as Record<string, unknown>;
+  const id = Number(data?.id);
+  const name = (data?.name as string)?.trim?.();
+  const createdAt = (data?.created_at as string) ?? (data?.createdAt as string) ?? '';
+  const rawVariants = Array.isArray(data?.variants)
+    ? data.variants
+    : Array.isArray(data?.product_variants)
+      ? data.product_variants
+      : Array.isArray(data?.items)
+        ? data.items
         : [];
 
   if (!Number.isFinite(id) || !name) {
@@ -104,6 +106,24 @@ export const createProductItem = async (item: ProductPayload) => {
 
   if (!response.ok) {
     throw new Error('Failed to save product.');
+  }
+
+  const data = await response.json().catch(() => null);
+  return normalizeProduct(data);
+};
+
+export const updateProductItem = async (id: number, item: ProductPayload) => {
+  const response = await fetch(getApiUrl(`/api/products/${id}`), {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(item),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update product.');
   }
 
   const data = await response.json().catch(() => null);
