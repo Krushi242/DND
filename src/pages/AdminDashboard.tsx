@@ -1,30 +1,74 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Phone, MapPin, Building2, MessageSquare, Calendar, RefreshCcw, Filter, ChevronRight, Download } from 'lucide-react';
+import { ChevronRight, Download, Filter, RefreshCcw } from 'lucide-react';
+import AdminContactsSection from '../components/admin/AdminContactsSection';
+import AdminGallerySection from '../components/admin/AdminGallerySection';
+import AdminOverview from '../components/admin/AdminOverview';
+import AdminSidebar from '../components/admin/AdminSidebar';
+import type { AdminSection, Contact } from '../components/admin/types';
 import { getApiUrl } from '../utils/api';
+import { getGalleryItems, saveGalleryItems } from '../utils/gallery';
+import type { GalleryItem } from '../utils/gallery';
 
-interface Contact {
-  id: number;
-  name: string;
-  phone: string;
-  email: string;
-  company: string;
-  city: string;
-  inquiry_type: string;
-  message: string;
-  created_at: string;
-}
+const optimizeGalleryImage = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file);
+    const image = new Image();
+
+    image.onload = () => {
+      const maxSize = 1600;
+      const scale = Math.min(maxSize / image.width, maxSize / image.height, 1);
+      const width = Math.round(image.width * scale);
+      const height = Math.round(image.height * scale);
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      canvas.width = width;
+      canvas.height = height;
+
+      if (!context) {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error('Unable to prepare image preview.'));
+        return;
+      }
+
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, width, height);
+      context.drawImage(image, 0, 0, width, height);
+
+      const optimized = canvas.toDataURL('image/webp', 0.82);
+      URL.revokeObjectURL(objectUrl);
+      resolve(optimized);
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error('Selected image could not be processed.'));
+    };
+
+    image.src = objectUrl;
+  });
 
 const AdminDashboard: React.FC = () => {
+  const [activeSection, setActiveSection] = useState<AdminSection>('overview');
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
+  const [galleryError, setGalleryError] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<GalleryItem | null>(null);
+  const [galleryForm, setGalleryForm] = useState({
+    title: '',
+    category: '',
+    src: '',
+  });
 
   const inquiryTypeLabels: Record<string, string> = {
     sales: 'Sales & Dealership',
     product: 'Product Information',
     support: 'Agronomy Support',
-    other: 'Other'
+    other: 'Other',
   };
 
   const formatDate = (value: string) => {
@@ -32,7 +76,6 @@ const AdminDashboard: React.FC = () => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-
     return `${day}/${month}/${year}`;
   };
 
@@ -53,27 +96,100 @@ const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchContacts();
+    setGalleryItems(getGalleryItems());
   }, []);
 
-  const filteredContacts = filter === 'all' 
-    ? contacts 
-    : contacts.filter(c => c.inquiry_type === filter);
+  const filteredContacts =
+    filter === 'all' ? contacts : contacts.filter((contact) => contact.inquiry_type === filter);
+
+  const handleGalleryFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGalleryError(null);
+    setGalleryForm({
+      ...galleryForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleGalleryFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    setGalleryError(null);
+
+    try {
+      const optimizedImage = await optimizeGalleryImage(file);
+      setGalleryForm((prev) => ({
+        ...prev,
+        src: optimizedImage,
+      }));
+    } catch (err: any) {
+      setGalleryError(err.message || 'Unable to read the selected image.');
+    }
+  };
+
+  const addGalleryItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    setGalleryError(null);
+
+    if (!galleryForm.title.trim() || !galleryForm.category.trim() || !galleryForm.src.trim()) {
+      setGalleryError('Please add title, category, and image before saving.');
+      return;
+    }
+
+    const nextItems = [
+      {
+        id: Date.now(),
+        title: galleryForm.title.trim(),
+        category: galleryForm.category.trim(),
+        src: galleryForm.src.trim(),
+      },
+      ...galleryItems,
+    ];
+
+    setGalleryItems(nextItems);
+    const didSave = saveGalleryItems(nextItems);
+
+    if (!didSave) {
+      setGalleryItems(galleryItems);
+      setGalleryError('Image is too large to save. Please choose a smaller image and try again.');
+      return;
+    }
+
+    setGalleryForm({ title: '', category: '', src: '' });
+    setIsGalleryModalOpen(false);
+  };
+
+  const deleteGalleryItem = () => {
+    if (!deleteTarget) {
+      return;
+    }
+
+    const nextItems = galleryItems.filter((item) => item.id !== deleteTarget.id);
+    setGalleryItems(nextItems);
+    saveGalleryItems(nextItems);
+    setDeleteTarget(null);
+  };
 
   const downloadCSV = () => {
     const headers = ['ID', 'Name', 'Phone', 'Email', 'Company', 'City', 'Inquiry Type', 'Message', 'Date'];
     const csvContent = [
       headers.join(','),
-      ...filteredContacts.map(c => [
-        c.id,
-        `"${c.name}"`,
-        `"${c.phone}"`,
-        `"${c.email}"`,
-        `"${c.company}"`,
-        `"${c.city}"`,
-        `"${inquiryTypeLabels[c.inquiry_type] || 'Other'}"`,
-        `"${c.message.replace(/"/g, '""')}"`,
-        `"${formatDate(c.created_at)} ${new Date(c.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}"`
-      ].join(','))
+      ...filteredContacts.map((contact) =>
+        [
+          contact.id,
+          `"${contact.name}"`,
+          `"${contact.phone}"`,
+          `"${contact.email}"`,
+          `"${contact.company}"`,
+          `"${contact.city}"`,
+          `"${inquiryTypeLabels[contact.inquiry_type] || 'Other'}"`,
+          `"${contact.message.replace(/"/g, '""')}"`,
+          `"${formatDate(contact.created_at)} ${new Date(contact.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}"`,
+        ].join(',')
+      ),
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -92,9 +208,10 @@ const AdminDashboard: React.FC = () => {
       sales: 'bg-blue-100 text-blue-700 border-blue-200',
       product: 'bg-[#F26A21]/10 text-[#F26A21] border-[#F26A21]/20',
       support: 'bg-[#005948]/10 text-[#005948] border-[#005948]/20',
-      other: 'bg-gray-100 text-gray-700 border-gray-200'
+      other: 'bg-gray-100 text-gray-700 border-gray-200',
     };
     const color = colors[type] || colors.other;
+
     return (
       <span className={`inline-flex min-w-[140px] items-center justify-center rounded-full border px-3 py-2 text-[12px] font-medium leading-none whitespace-nowrap ${color}`}>
         {inquiryTypeLabels[type] || inquiryTypeLabels.other}
@@ -103,172 +220,145 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-12 font-sans">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#1E293B] flex items-center gap-3">
-              Admin Dashboard
-              <span className="text-sm font-normal bg-[#005948] text-white px-3 py-1 rounded-full">
-                Contacts
-              </span>
-            </h1>
-            <p className="text-[#64748B] mt-1">Manage and view all incoming inquiries from the contact form.</p>
-          </div>
-          
-          <div className="flex flex-wrap items-center gap-3">
-            <button 
-              onClick={downloadCSV}
-              className="flex items-center gap-2 px-4 py-2 bg-[#F26A21] text-white rounded-lg font-medium hover:bg-[#e05a12] transition-colors shadow-sm"
-            >
-              <Download size={18} />
-              Export CSV
-            </button>
-            <button 
-              onClick={fetchContacts}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E2E8F0] rounded-lg text-[#475569] font-medium hover:bg-gray-50 transition-colors shadow-sm"
-            >
-              <RefreshCcw size={18} className={loading ? 'animate-spin' : ''} />
-              Refresh
-            </button>
-            <div className="relative">
-              <select 
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="appearance-none pl-10 pr-10 py-2 bg-white border border-[#E2E8F0] rounded-lg text-[#475569] font-medium focus:outline-none focus:ring-2 focus:ring-[#005948]/20 transition-all shadow-sm"
-              >
-                <option value="all">All Inquiries</option>
-                <option value="sales">Sales & Dealership</option>
-                <option value="product">Product Info</option>
-                <option value="support">Agronomy Support</option>
-                <option value="other">Other</option>
-              </select>
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
-              <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] rotate-90" size={16} />
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#f8fafc] font-sans text-[#1E293B]">
+      <div className="grid min-h-screen xl:grid-cols-[280px_minmax(0,1fr)]">
+        <AdminSidebar
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+          contactsCount={contacts.length}
+          galleryCount={galleryItems.length}
+        />
 
-        {/* Stats Summary */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-[#005948] border-[#E2E8F0] shadow-sm">
-            <p className="text-[#64748B] text-sm font-medium mb-1">Total Inquiries</p>
-            <p className="text-3xl font-bold text-[#1E293B]">{contacts.length}</p>
-          </div>
-          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-blue-600 border-[#E2E8F0] shadow-sm">
-            <p className="text-[#64748B] text-sm font-medium mb-1">Sales Leads</p>
-            <p className="text-3xl font-bold text-blue-600">{contacts.filter(c => c.inquiry_type === 'sales').length}</p>
-          </div>
-          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-[#F26A21] border-[#E2E8F0] shadow-sm">
-            <p className="text-[#64748B] text-sm font-medium mb-1">Product Inquiries</p>
-            <p className="text-3xl font-bold text-[#F26A21]">{contacts.filter(c => c.inquiry_type === 'product').length}</p>
-          </div>
-          <div className="bg-white p-6 rounded-xl border-l-[4px] border-l-[#005948] border-[#E2E8F0] shadow-sm">
-            <p className="text-[#64748B] text-sm font-medium mb-1">Support Requests</p>
-            <p className="text-3xl font-bold text-[#005948]">{contacts.filter(c => c.inquiry_type === 'support').length}</p>
-          </div>
-        </div>
+        <main className="p-4 md:p-6 xl:px-10 xl:py-10">
+          <div className="mx-auto w-full max-w-[1240px]">
+            <div className="mb-6 rounded-[10px] border border-[#DDE7E3] bg-white/90 p-5 md:p-6">
+              <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+                <div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h1 className="text-3xl font-bold tracking-[-0.02em] text-[#12263F] md:text-4xl">Admin Dashboard</h1>
+                    <span className="rounded-full bg-[#005948] px-3 py-1 text-sm font-semibold text-white">
+                      {activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}
+                    </span>
+                  </div>
+                  <p className="mt-3 max-w-xl text-[15px] leading-7 text-[#5B6B82]">
+                    Manage incoming inquiries, review lead quality, and update gallery items that appear on the public website.
+                  </p>
+                </div>
 
-        {/* Table/Content */}
-        <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-md overflow-hidden mb-12">
-          {error && (
-            <div className="p-8 text-center bg-red-50">
-              <p className="text-red-600 font-medium">Error: {error}</p>
-              <button 
-                onClick={fetchContacts}
-                className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-              >
-                Try Again
-              </button>
-            </div>
-          )}
+                <div className="flex flex-wrap items-center gap-3">
+                  {(activeSection === 'overview' || activeSection === 'contacts') && (
+                    <>
+                      <button
+                        onClick={downloadCSV}
+                        className="flex items-center gap-2 rounded-[10px] bg-[#F26A21] px-4 py-3 font-medium text-white shadow-sm transition-colors hover:bg-[#e05a12]"
+                      >
+                        <Download size={18} />
+                        Export CSV
+                      </button>
+                      <button
+                        onClick={fetchContacts}
+                        className="flex items-center gap-2 rounded-[10px] border border-[#D9E2EC] bg-white px-4 py-3 font-medium text-[#475569] transition-colors hover:bg-gray-50"
+                      >
+                        <RefreshCcw size={18} className={loading ? 'animate-spin' : ''} />
+                        Refresh
+                      </button>
+                    </>
+                  )}
 
-          {!error && loading && contacts.length === 0 ? (
-            <div className="p-20 flex flex-col items-center justify-center space-y-4">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005948]"></div>
-              <p className="text-[#64748B]">Loading contact submissions...</p>
-            </div>
-          ) : !error && filteredContacts.length === 0 ? (
-            <div className="p-20 text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageSquare className="text-gray-400" size={32} />
-              </div>
-              <h3 className="text-lg font-semibold text-[#1E293B]">No inquiries found</h3>
-              <p className="text-[#64748B]">No submissions match your current filter.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-200">
-              <div className="min-w-[1000px] md:min-w-0">
-                <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0]">
-                    <th className="px-6 py-4 text-[13px] font-semibold text-[#475569] uppercase tracking-wider">Contact Info</th>
-                    <th className="px-6 py-4 text-[13px] font-semibold text-[#475569] uppercase tracking-wider">Details</th>
-                    <th className="w-[180px] px-6 py-4 text-[13px] font-semibold text-[#475569] uppercase tracking-wider">Type</th>
-                    <th className="px-6 py-4 text-[13px] font-semibold text-[#475569] uppercase tracking-wider">Message</th>
-                    <th className="px-6 py-4 text-[13px] font-semibold text-[#475569] uppercase tracking-wider text-right">Date</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#F1F5F9]">
-                  {filteredContacts.map((contact) => (
-                    <tr key={contact.id} className="hover:bg-[#F8FAFC] transition-colors group">
-                      <td className="px-6 py-5 align-top">
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="w-9 h-9 rounded-full bg-[#005948]/10 text-[#005948] flex items-center justify-center font-bold">
-                            {contact.name.charAt(0).toUpperCase()}
-                          </div>
-                          <span className="font-semibold text-[#1E293B] whitespace-nowrap">{contact.name}</span>
-                        </div>
-                        <div className="flex flex-col gap-1.5 ml-12">
-                          <a href={`mailto:${contact.email}`} className="flex items-center gap-2 text-sm text-[#64748B] hover:text-[#005948]">
-                            <Mail size={14} /> {contact.email}
-                          </a>
-                          <a href={`tel:${contact.phone}`} className="flex items-center gap-2 text-sm text-[#64748B] hover:text-[#005948]">
-                            <Phone size={14} /> {contact.phone}
-                          </a>
-                        </div>
-                      </td>
-                      <td className="px-6 py-5 align-top">
-                        <div className="flex flex-col gap-1.5">
-                          <div className="flex items-center gap-2 text-sm text-[#334155] font-medium">
-                            <Building2 size={14} className="text-[#94A3B8]" /> {contact.company}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-[#64748B]">
-                            <MapPin size={14} className="text-[#94A3B8]" /> {contact.city}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="w-[180px] px-6 py-5 align-top">
-                        {getInquiryBadge(contact.inquiry_type)}
-                      </td>
-                      <td className="px-6 py-5 align-top max-w-md">
-                        <div className="bg-[#F1F5F9] p-3 rounded-lg text-sm text-[#475569] line-clamp-3 group-hover:line-clamp-none transition-all cursor-default relative break-all">
-                          <MessageSquare size={14} className="absolute -top-2 -left-2 bg-white rounded-full p-0.5 shadow-sm text-[#64748B]" />
-                          {contact.message}
-                        </div>
-                      </td>
-                      <td className="px-6 py-5 align-top text-right">
-                        <div className="flex flex-col items-end gap-1">
-                          <div className="flex items-center gap-1.5 text-[13px] font-medium text-[#1E293B]">
-                             <Calendar size={14} className="text-[#94A3B8]" /> {formatDate(contact.created_at)}
-                          </div>
-                          <span className="text-[12px] text-[#94A3B8]">{new Date(contact.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                  {activeSection === 'contacts' && (
+                    <div className="relative">
+                      <select
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="appearance-none rounded-[10px] border border-[#D9E2EC] bg-white py-3 pl-10 pr-10 font-medium text-[#475569] focus:outline-none focus:ring-2 focus:ring-[#005948]/20"
+                      >
+                        <option value="all">All Inquiries</option>
+                        <option value="sales">Sales & Dealership</option>
+                        <option value="product">Product Info</option>
+                        <option value="support">Agronomy Support</option>
+                        <option value="other">Other</option>
+                      </select>
+                      <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" size={18} />
+                      <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 rotate-90 text-[#94A3B8]" size={16} />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          )}
-        </div>
-      </div>
-      
-      {/* Footer Info */}
-      <div className="mt-8 text-center text-sm text-[#94A3B8]">
-        <p>&copy; {new Date().getFullYear()} DRD Plantech LLP - Admin Portal</p>
+
+            {activeSection !== 'gallery' && (
+              <div className="mb-6 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                <div className="rounded-[10px] border border-[#DDE7E3] bg-white p-6">
+                  <p className="text-sm font-medium text-[#64748B]">Total Inquiries</p>
+                  <p className="mt-3 text-4xl font-bold text-[#12263F]">{contacts.length}</p>
+                  <div className="mt-4 h-1.5 w-16 rounded-full bg-[#005948]"></div>
+                </div>
+                <div className="rounded-[10px] border border-[#E1E7FF] bg-white p-6">
+                  <p className="text-sm font-medium text-[#64748B]">Sales Leads</p>
+                  <p className="mt-3 text-4xl font-bold text-blue-600">{contacts.filter((contact) => contact.inquiry_type === 'sales').length}</p>
+                  <div className="mt-4 h-1.5 w-16 rounded-full bg-blue-600"></div>
+                </div>
+                <div className="rounded-[10px] border border-[#FFE6D7] bg-white p-6">
+                  <p className="text-sm font-medium text-[#64748B]">Product Inquiries</p>
+                  <p className="mt-3 text-4xl font-bold text-[#F26A21]">{contacts.filter((contact) => contact.inquiry_type === 'product').length}</p>
+                  <div className="mt-4 h-1.5 w-16 rounded-full bg-[#F26A21]"></div>
+                </div>
+                <div className="rounded-[10px] border border-[#DDE7E3] bg-white p-6">
+                  <p className="text-sm font-medium text-[#64748B]">Support Requests</p>
+                  <p className="mt-3 text-4xl font-bold text-[#005948]">{contacts.filter((contact) => contact.inquiry_type === 'support').length}</p>
+                  <div className="mt-4 h-1.5 w-16 rounded-full bg-[#005948]"></div>
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'overview' && (
+              <AdminOverview
+                contacts={contacts}
+                galleryItems={galleryItems}
+                formatDate={formatDate}
+                getInquiryBadge={getInquiryBadge}
+              />
+            )}
+
+            {activeSection === 'contacts' && (
+              <AdminContactsSection
+                error={error}
+                loading={loading}
+                contacts={contacts}
+                filteredContacts={filteredContacts}
+                formatDate={formatDate}
+                getInquiryBadge={getInquiryBadge}
+                onRetry={fetchContacts}
+              />
+            )}
+
+            {activeSection === 'gallery' && (
+              <AdminGallerySection
+                galleryItems={galleryItems}
+                galleryForm={galleryForm}
+                isAddModalOpen={isGalleryModalOpen}
+                deleteTarget={deleteTarget}
+                galleryError={galleryError}
+                onFieldChange={handleGalleryFieldChange}
+                onFileChange={handleGalleryFileChange}
+                onSubmit={addGalleryItem}
+                onRequestDelete={setDeleteTarget}
+                onConfirmDelete={deleteGalleryItem}
+                onOpenModal={() => setIsGalleryModalOpen(true)}
+                onCloseModal={() => {
+                  setIsGalleryModalOpen(false);
+                  setGalleryError(null);
+                  setGalleryForm({ title: '', category: '', src: '' });
+                }}
+                onCloseDeleteModal={() => setDeleteTarget(null)}
+              />
+            )}
+
+            <div className="mt-8 text-center text-sm text-[#94A3B8]">
+              <p>&copy; {new Date().getFullYear()} DRD Plantech LLP - Admin Portal</p>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );

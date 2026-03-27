@@ -44,6 +44,8 @@ const Footer: React.FC = () => {
               <li><Link to="/" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Home</Link></li>
               <li><Link to="/about" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">About Us</Link></li>
               <li><Link to="/products" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Products</Link></li>
+              <li><Link to="/gallery" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Gallery</Link></li>
+              <li><Link to="/videos" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Videos</Link></li>
               <li><Link to="/contact" className="hover:text-[#F26A21] hover:translate-x-1 inline-block transition-all duration-300">Contact Us</Link></li>
             </ul>
           </div>

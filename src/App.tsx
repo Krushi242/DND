@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
+import AdminProtectedRoute from './components/admin/AdminProtectedRoute';
 
 import Home from './pages/Home';
 
@@ -16,6 +17,7 @@ const Product2 = lazy(() => import('./pages/Product2'));
 const Products = lazy(() => import('./pages/Products'));
 const Contact = lazy(() => import('./pages/Contact'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Videos = lazy(() => import('./pages/Videos'));
 
@@ -41,7 +43,10 @@ const AppContent: React.FC = () => {
             <Route path="/field-crop-seeds" element={<Product2 />} />
             <Route path="/products" element={<Products />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route element={<AdminProtectedRoute />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+            </Route>
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/videos" element={<Videos />} />
           </Routes>

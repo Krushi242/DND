@@ -1,39 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageBanner from '../components/sections/PageBanner';
 import Container from '../components/common/Container';
 import SEO from '../components/common/SEO';
 import { X, ZoomIn } from 'lucide-react';
-
-// Import images
-import img1 from '../assets/images/Beans.webp';
-import img2 from '../assets/images/Bhendi.webp';
-import img3 from '../assets/images/Bitter-Gourd.webp';
-import img4 from '../assets/images/Bottle-Gourd.webp';
-import img5 from '../assets/images/Chilli.webp';
-import img6 from '../assets/images/Cucumber.webp';
-import img7 from '../assets/images/Muskmelon.webp';
-import img8 from '../assets/images/Tomato.webp';
-import img9 from '../assets/images/Watermelon.webp';
-import img10 from '../assets/images/featured.webp';
 import galleryBg from '../assets/images/hero_bg.webp';
-
-const galleryImages = [
-  { id: 1, src: img1, title: 'French Beans', category: 'Vegetable' },
-  { id: 2, src: img2, title: 'Okra (Bhendi)', category: 'Vegetable' },
-  { id: 3, src: img3, title: 'Bitter Gourd', category: 'Vegetable' },
-  { id: 4, src: img4, title: 'Bottle Gourd', category: 'Vegetable' },
-  { id: 5, src: img5, title: 'Hot Chilli', category: 'Vegetable' },
-  { id: 6, src: img6, title: 'Green Cucumber', category: 'Vegetable' },
-  { id: 7, src: img7, title: 'Sweet Muskmelon', category: 'Fruit' },
-  { id: 8, src: img8, title: 'Red Tomato', category: 'Vegetable' },
-  { id: 9, src: img9, title: 'Juicy Watermelon', category: 'Fruit' },
-  { id: 10, src: img10, title: 'Premium Hybrids', category: 'Research' },
-];
+import { GALLERY_UPDATED_EVENT, getGalleryItems } from '../utils/gallery';
+import type { GalleryItem } from '../utils/gallery';
 
 import CTA from '../components/sections/CTA';
 
 const Gallery: React.FC = () => {
+  const [galleryImages, setGalleryImages] = useState<GalleryItem[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const syncGalleryImages = () => {
+      setGalleryImages(getGalleryItems());
+    };
+
+    syncGalleryImages();
+    window.addEventListener(GALLERY_UPDATED_EVENT, syncGalleryImages);
+    window.addEventListener('focus', syncGalleryImages);
+    document.addEventListener('visibilitychange', syncGalleryImages);
+
+    return () => {
+      window.removeEventListener(GALLERY_UPDATED_EVENT, syncGalleryImages);
+      window.removeEventListener('focus', syncGalleryImages);
+      document.removeEventListener('visibilitychange', syncGalleryImages);
+    };
+  }, []);
 
   const openLightbox = (src: string) => {
     setSelectedImage(src);
@@ -56,9 +51,9 @@ const Gallery: React.FC = () => {
       
       <PageBanner title="Photo Gallery" backgroundImage={galleryBg} />
 
-      <section className="py-[60px] md:py-[100px] bg-[#FAF9F6] md:mx-[20px] rounded-[20px]">
+      <section className="rounded-[20px] bg-[#FAF9F6] py-[60px] md:mx-[20px] md:py-[100px]">
         <Container size="wide">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="mx-auto mb-16 max-w-3xl text-center">
             <h2 className="text-[#1F1F1F] text-[28px] md:text-[36px] font-medium leading-[1.2] mb-6">
               Our High-Performance Hybrids
             </h2>
@@ -67,34 +62,30 @@ const Gallery: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="columns-1 gap-5 sm:columns-2 md:gap-6 lg:columns-3 lg:gap-7">
             {galleryImages.map((image) => (
               <div 
                 key={image.id}
-                className="group relative overflow-hidden rounded-xl bg-white shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
+                className="group relative mb-5 break-inside-avoid cursor-pointer overflow-hidden rounded-[18px] bg-transparent transition-all duration-500 hover:-translate-y-1 md:mb-6 lg:mb-7"
                 onClick={() => openLightbox(image.src)}
               >
-                {/* Image Container */}
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img 
-                    src={image.src} 
-                    alt={image.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <span className="text-[#F26A21] text-xs font-bold uppercase tracking-wider mb-2 block">
-                      {image.category}
-                    </span>
-                    <h3 className="text-white text-xl font-medium mb-2">
-                      {image.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-white/80 text-sm">
+                <img 
+                  src={image.src} 
+                  alt={image.title}
+                  className="h-auto min-h-[240px] w-full max-h-[420px] rounded-[18px] object-cover transition-transform duration-700 group-hover:scale-[1.02] md:min-h-[280px] md:max-h-[460px]"
+                />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 rounded-b-[18px] bg-[linear-gradient(180deg,rgba(9,18,16,0.02)_0%,rgba(9,18,16,0.72)_100%)] p-4 opacity-100 transition-all duration-500 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
+                  <div className="flex items-end justify-between gap-3">
+                    <div className="min-w-0">
+                      <span className="mb-2 inline-flex rounded-full bg-[#F26A21] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white shadow-sm">
+                        {image.category}
+                      </span>
+                      <h3 className="truncate text-lg font-medium text-white md:text-[22px]">
+                        {image.title}
+                      </h3>
+                    </div>
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm">
                       <ZoomIn size={16} />
-                      <span>View Full Size</span>
                     </div>
                   </div>
                 </div>
