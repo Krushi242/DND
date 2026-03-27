@@ -8,7 +8,7 @@ interface AdminVideosSectionProps {
   videoError: string | null;
   isAddModalOpen: boolean;
   deleteTarget: VideoItem | null;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onVideoUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onOpenModal: () => void;
   onCloseModal: () => void;
@@ -23,7 +23,7 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
   videoError,
   isAddModalOpen,
   deleteTarget,
-  onFileChange,
+  onVideoUrlChange,
   onSubmit,
   onOpenModal,
   onCloseModal,
@@ -40,7 +40,7 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
               <PlaySquare size={20} className="text-[#005948]" />
               Video Manager
             </h2>
-            <p className="mt-1 text-sm text-[#64748B]">Add videos here and they will show on the Videos page.</p>
+            <p className="mt-1 text-sm text-[#64748B]">Add hosted video links here and they will show on the Videos page.</p>
           </div>
           <div className="flex items-center gap-3">
             <span className="inline-flex w-fit rounded-full bg-[#005948]/10 px-3 py-1 text-sm font-medium text-[#005948]">
@@ -99,7 +99,7 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
               <div className="flex items-center justify-between border-b border-[#E2E8F0] px-6 py-5">
                 <div>
                   <h3 className="text-xl font-semibold text-[#1E293B]">Add Video</h3>
-                  <p className="mt-1 text-sm text-[#64748B]">Choose a video file that should appear on the public videos page.</p>
+                  <p className="mt-1 text-sm text-[#64748B]">Paste the public hosted video URL that should appear on the videos page.</p>
                 </div>
                 <button
                   type="button"
@@ -112,13 +112,15 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
 
               <form onSubmit={onSubmit} className="flex-1 space-y-4 overflow-y-auto p-6">
                 <div>
-                  <label htmlFor="video-file" className="mb-2 block text-sm font-medium text-[#334155]">Choose Video</label>
+                  <label htmlFor="video-url" className="mb-2 block text-sm font-medium text-[#334155]">Video URL</label>
                   <input
-                    id="video-file"
-                    type="file"
-                    accept="video/*"
-                    onChange={onFileChange}
-                    className="w-full rounded-[10px] border border-[#CBD5E1] bg-white px-4 py-3 text-sm text-[#1E293B] file:mr-3 file:rounded-[10px] file:border-0 file:bg-[#005948] file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#00483f]"
+                    id="video-url"
+                    name="videoUrl"
+                    type="url"
+                    value={videoSrc}
+                    onChange={onVideoUrlChange}
+                    className="w-full rounded-[10px] border border-[#CBD5E1] bg-white px-4 py-3 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#005948]/20"
+                    placeholder="https://your-storage-domain.com/video.mp4"
                   />
                 </div>
 

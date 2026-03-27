@@ -71,7 +71,6 @@ const AdminDashboard: React.FC = () => {
     src: '',
   });
   const [videoSrc, setVideoSrc] = useState('');
-  const [videoFile, setVideoFile] = useState<File | null>(null);
 
   const inquiryTypeLabels: Record<string, string> = {
     sales: 'Sales & Dealership',
@@ -208,13 +207,13 @@ const AdminDashboard: React.FC = () => {
     e.preventDefault();
     setVideoError(null);
 
-    if (!videoFile) {
-      setVideoError('Please choose a video before saving.');
+    if (!videoSrc.trim()) {
+      setVideoError('Please add a hosted video URL before saving.');
       return;
     }
 
     try {
-      const createdItem = await createVideoItem(videoFile);
+      const createdItem = await createVideoItem(videoSrc.trim());
 
       if (createdItem) {
         setVideoItems((prev) => [createdItem, ...prev]);
@@ -222,11 +221,7 @@ const AdminDashboard: React.FC = () => {
         await fetchVideos();
       }
 
-      if (videoSrc) {
-        URL.revokeObjectURL(videoSrc);
-      }
       setVideoSrc('');
-      setVideoFile(null);
       setIsVideoModalOpen(false);
     } catch (err: any) {
       setVideoError(err.message || 'Unable to save video.');
@@ -437,37 +432,16 @@ const AdminDashboard: React.FC = () => {
                 videoError={videoError}
                 isAddModalOpen={isVideoModalOpen}
                 deleteTarget={deleteVideoTarget}
-                onFileChange={async (e) => {
-                  const file = e.target.files?.[0];
-
-                  if (!file) {
-                    return;
-                  }
-
+                onVideoUrlChange={(e) => {
                   setVideoError(null);
-
-                  try {
-                    if (videoSrc) {
-                      URL.revokeObjectURL(videoSrc);
-                    }
-
-                    const nextVideoSrc = URL.createObjectURL(file);
-                    setVideoFile(file);
-                    setVideoSrc(nextVideoSrc);
-                  } catch (err: any) {
-                    setVideoError(err.message || 'Unable to read the selected video.');
-                  }
+                  setVideoSrc(e.target.value);
                 }}
                 onSubmit={addVideoItem}
                 onOpenModal={() => setIsVideoModalOpen(true)}
                 onCloseModal={() => {
-                  if (videoSrc) {
-                    URL.revokeObjectURL(videoSrc);
-                  }
                   setIsVideoModalOpen(false);
                   setVideoError(null);
                   setVideoSrc('');
-                  setVideoFile(null);
                 }}
                 onRequestDelete={setDeleteVideoTarget}
                 onConfirmDelete={deleteVideoItem}
