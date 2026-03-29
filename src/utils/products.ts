@@ -121,7 +121,7 @@ export const getProductItems = async () => {
 };
 
 export const getFreshProductItems = async () => {
-  const response = await fetch(getApiUrl('/api/products'), {
+  const response = await fetch(getApiUrl(`/api/products?t=${Date.now()}`), {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -164,7 +164,7 @@ export const createProductItem = async (item: ProductPayload) => {
   }
 
   const data = await response.json().catch(() => null);
-  const normalizedItem = normalizeProduct(data?.item || data);
+  const normalizedItem = normalizeProduct(data?.item || data?.product || data);
 
   if (typeof window !== 'undefined') {
     window.sessionStorage.removeItem(PRODUCTS_CACHE_KEY);
@@ -189,7 +189,7 @@ export const updateProductItem = async (id: number, item: ProductPayload) => {
   }
 
   const data = await response.json().catch(() => null);
-  const normalizedItem = normalizeProduct(data?.item || data);
+  const normalizedItem = normalizeProduct(data?.item || data?.product || data);
 
   if (typeof window !== 'undefined') {
     window.sessionStorage.removeItem(PRODUCTS_CACHE_KEY);
