@@ -1,7 +1,6 @@
 import React from 'react';
 import { PlaySquare, Plus, Trash2, X } from 'lucide-react';
 import type { VideoItem } from '../../utils/videos';
-import { isEmbeddableVideoUrl } from '../../utils/mediaLinks';
 import VideoPlayer from '../common/VideoPlayer';
 
 interface AdminVideosSectionProps {
