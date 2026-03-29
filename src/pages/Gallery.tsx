@@ -99,6 +99,7 @@ const Gallery: React.FC = () => {
                   onClick={() => openLightbox(image.src)}
                 >
                   <img 
+                    loading="lazy"
                     src={image.src} 
                     alt={image.title}
                     className="h-auto min-h-[240px] w-full max-h-[420px] rounded-[18px] object-cover transition-transform duration-700 group-hover:scale-[1.02] md:min-h-[280px] md:max-h-[460px]"

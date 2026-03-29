@@ -164,7 +164,7 @@ export const createProductItem = async (item: ProductPayload) => {
   }
 
   const data = await response.json().catch(() => null);
-  const normalizedItem = normalizeProduct(data);
+  const normalizedItem = normalizeProduct(data?.item || data);
 
   if (typeof window !== 'undefined') {
     window.sessionStorage.removeItem(PRODUCTS_CACHE_KEY);
@@ -189,7 +189,7 @@ export const updateProductItem = async (id: number, item: ProductPayload) => {
   }
 
   const data = await response.json().catch(() => null);
-  const normalizedItem = normalizeProduct(data);
+  const normalizedItem = normalizeProduct(data?.item || data);
 
   if (typeof window !== 'undefined') {
     window.sessionStorage.removeItem(PRODUCTS_CACHE_KEY);

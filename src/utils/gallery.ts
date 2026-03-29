@@ -78,7 +78,7 @@ export const createGalleryItem = async (item: Omit<GalleryItem, 'id'>) => {
   }
 
   const data = await response.json().catch(() => null);
-  const createdItem = normalizeGalleryItem(data);
+  const createdItem = normalizeGalleryItem(data?.item || data);
 
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new Event(GALLERY_UPDATED_EVENT));

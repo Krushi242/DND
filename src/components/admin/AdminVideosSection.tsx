@@ -2,6 +2,7 @@ import React from 'react';
 import { PlaySquare, Plus, Trash2, X } from 'lucide-react';
 import type { VideoItem } from '../../utils/videos';
 import { isEmbeddableVideoUrl } from '../../utils/mediaLinks';
+import VideoPlayer from '../common/VideoPlayer';
 
 interface AdminVideosSectionProps {
   videoItems: VideoItem[];
@@ -76,21 +77,7 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
             <div className="grid gap-4 xl:grid-cols-2">
               {videoItems.map((item, index) => (
               <div key={item.id} className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white">
-                <div className="aspect-video bg-black">
-                  {isEmbeddableVideoUrl(item.videoUrl) ? (
-                    <iframe
-                      src={item.videoUrl}
-                      className="h-full w-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      title={`Video ${index + 1}`}
-                    />
-                  ) : (
-                    <video controls className="h-full w-full object-contain">
-                      <source src={item.videoUrl} />
-                    </video>
-                  )}
-                  </div>
+                <VideoPlayer src={item.videoUrl} title={`Video ${index + 1}`} />
                   <div className="space-y-3 p-4">
                     <div>
                       <p className="text-base font-semibold text-[#1E293B]">Video {index + 1}</p>
@@ -150,21 +137,7 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
 
                 {videoSrc && (
                   <div className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]">
-                    <div className="aspect-video bg-black">
-                      {isEmbeddableVideoUrl(videoSrc) ? (
-                        <iframe
-                          src={videoSrc}
-                          className="h-full w-full"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          title="Video preview"
-                        />
-                      ) : (
-                        <video controls className="h-full w-full object-contain">
-                          <source src={videoSrc} />
-                        </video>
-                      )}
-                    </div>
+                    <VideoPlayer src={videoSrc} title="Video preview" />
                   </div>
                 )}
 

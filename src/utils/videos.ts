@@ -68,7 +68,7 @@ export const createVideoItem = async (videoUrl: string) => {
   }
 
   const data = await response.json().catch(() => null);
-  return normalizeVideoItem(data);
+  return normalizeVideoItem(data?.item || data);
 };
 
 export const removeVideoItem = async (id: number) => {
