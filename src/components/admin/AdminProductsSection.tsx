@@ -18,6 +18,7 @@ import {
   X,
 } from 'lucide-react';
 import ProductRichText from '../common/ProductRichText';
+import { toGalleryImageUrl } from '../../utils/mediaLinks';
 import type { ProductItem, ProductPayload } from '../../utils/products';
 
 type ProductFormVariant = ProductPayload['variants'][number];
@@ -271,7 +272,7 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
                       <div key={variant.id} className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]">
                         {variant.image ? (
                           <div className="aspect-[4/3] bg-white">
-                            <img src={variant.image} alt={variant.title} className="h-full w-full object-contain" />
+                            <img src={toGalleryImageUrl(variant.image)} alt={variant.title} className="h-full w-full object-contain" />
                           </div>
                         ) : null}
                         <div className="space-y-3 p-4">
@@ -429,7 +430,7 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
                           {variant.image ? (
                             <div className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white">
                               <div className="aspect-[4/3] p-3">
-                                <img src={variant.image} alt={variant.title || `Variant ${index + 1}`} className="h-full w-full object-contain" />
+                                <img src={toGalleryImageUrl(variant.image)} alt={variant.title || `Variant ${index + 1}`} className="h-full w-full object-contain" />
                               </div>
                             </div>
                           ) : null}

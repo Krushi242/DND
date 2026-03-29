@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Container from './Container';
 import ProductRichText from './ProductRichText';
+import { toGalleryImageUrl } from '../../utils/mediaLinks';
 
 export interface ProductVariant {
   name: string;
@@ -124,7 +125,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                   >
                     {variant.image || image ? (
                         <img
-                          src={variant.image || image}
+                          src={toGalleryImageUrl(variant.image || image || '')}
                           alt={variant.imageAlt || imageAlt}
                           className="w-full h-full object-cover"
                           loading="lazy"
@@ -166,7 +167,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
             >
               {image ? (
                 <img
-                  src={image}
+                  src={toGalleryImageUrl(image)}
                   alt={imageAlt}
                   className="w-full h-full object-cover"
                   loading="lazy"
