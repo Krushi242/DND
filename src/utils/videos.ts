@@ -1,4 +1,5 @@
 import { getApiUrl } from './api';
+import { toVideoEmbedUrl } from './mediaLinks';
 
 export interface VideoItem {
   id: number;
@@ -18,7 +19,7 @@ const normalizeVideoItem = (item: unknown): VideoItem | null => {
 
   return {
     id,
-    videoUrl,
+    videoUrl: toVideoEmbedUrl(videoUrl),
     createdAt,
   };
 };
@@ -50,16 +51,16 @@ export const getVideoItems = async () => {
   }
 };
 
-export const createVideoItem = async (file: File) => {
-  const formData = new FormData();
-  formData.append('video', file);
-
+export const createVideoItem = async (videoUrl: string) => {
   const response = await fetch(getApiUrl('/api/videos'), {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-    body: formData,
+    body: JSON.stringify({
+      video_url: videoUrl,
+    }),
   });
 
   if (!response.ok) {

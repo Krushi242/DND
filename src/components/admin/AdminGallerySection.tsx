@@ -1,6 +1,7 @@
 import React from 'react';
 import { Images, Plus, Trash2, X } from 'lucide-react';
 import type { GalleryItem } from '../../utils/gallery';
+import { toGalleryImageUrl } from '../../utils/mediaLinks';
 
 interface AdminGallerySectionProps {
   galleryItems: GalleryItem[];
@@ -15,7 +16,6 @@ interface AdminGallerySectionProps {
   isLoading: boolean;
   isSaving: boolean;
   onFieldChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onRequestDelete: (item: GalleryItem) => void;
   onConfirmDelete: () => void;
@@ -33,7 +33,6 @@ const AdminGallerySection: React.FC<AdminGallerySectionProps> = ({
   isLoading,
   isSaving,
   onFieldChange,
-  onFileChange,
   onSubmit,
   onRequestDelete,
   onConfirmDelete,
@@ -41,6 +40,8 @@ const AdminGallerySection: React.FC<AdminGallerySectionProps> = ({
   onCloseModal,
   onCloseDeleteModal,
 }) => {
+  const previewUrl = galleryForm.src ? toGalleryImageUrl(galleryForm.src) : '';
+
   return (
     <>
       <div className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white">
@@ -83,7 +84,7 @@ const AdminGallerySection: React.FC<AdminGallerySectionProps> = ({
               {galleryItems.map((item) => (
                 <div key={item.id} className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white">
                   <div className="aspect-[4/3] bg-[#F8FAFC]">
-                    <img src={item.src} alt={item.title} className="h-full w-full object-contain" />
+                    <img src={item.src} alt={item.title} className="h-full w-full object-contain" referrerPolicy="no-referrer" />
                   </div>
                   <div className="space-y-2 p-4">
                     <span className="inline-flex rounded-full bg-[#F26A21]/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-[#F26A21]">
@@ -114,7 +115,7 @@ const AdminGallerySection: React.FC<AdminGallerySectionProps> = ({
           <div className="flex items-center justify-between border-b border-[#E2E8F0] px-6 py-5">
             <div>
               <h3 className="text-xl font-semibold text-[#1E293B]">Add Gallery Item</h3>
-              <p className="mt-1 text-sm text-[#64748B]">Upload an image directly from your device.</p>
+              <p className="mt-1 text-sm text-[#64748B]">Add an image URL and it will show on the Gallery page.</p>
             </div>
             <button
               type="button"
@@ -153,13 +154,15 @@ const AdminGallerySection: React.FC<AdminGallerySectionProps> = ({
             </div>
 
             <div>
-              <label htmlFor="gallery-file" className="mb-2 block text-sm font-medium text-[#334155]">Choose Image</label>
+              <label htmlFor="gallery-src" className="mb-2 block text-sm font-medium text-[#334155]">Image URL</label>
               <input
-                id="gallery-file"
-                type="file"
-                accept="image/*"
-                onChange={onFileChange}
-                className="w-full rounded-[10px] border border-[#CBD5E1] bg-white px-4 py-3 text-sm text-[#1E293B] file:mr-3 file:rounded-[10px] file:border-0 file:bg-[#005948] file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#00483f]"
+                id="gallery-src"
+                name="src"
+                type="url"
+                value={galleryForm.src}
+                onChange={onFieldChange}
+                className="w-full rounded-[10px] border border-[#CBD5E1] bg-white px-4 py-3 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#005948]/20"
+                placeholder="https://example.com/image.jpg"
               />
             </div>
 
@@ -172,7 +175,7 @@ const AdminGallerySection: React.FC<AdminGallerySectionProps> = ({
             {galleryForm.src && (
               <div className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]">
                 <div className="aspect-[4/3] bg-[#F8FAFC] p-3">
-                  <img src={galleryForm.src} alt={galleryForm.title || 'Selected gallery preview'} className="h-full w-full object-contain" />
+                  <img src={previewUrl} alt={galleryForm.title || 'Selected gallery preview'} className="h-full w-full object-contain" referrerPolicy="no-referrer" />
                 </div>
               </div>
             )}

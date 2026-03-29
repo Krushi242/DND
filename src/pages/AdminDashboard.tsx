@@ -10,49 +10,11 @@ import type { AdminSection, Contact } from '../components/admin/types';
 import { getApiUrl } from '../utils/api';
 import { createGalleryItem, getGalleryItems, removeGalleryItem } from '../utils/gallery';
 import type { GalleryItem } from '../utils/gallery';
-import { createProductItem, removeProductItem, getProductItems, updateProductItem } from '../utils/products';
+import { createProductItem, getProductItems, updateProductItem } from '../utils/products';
 import type { ProductItem, ProductPayload } from '../utils/products';
 import { createVideoItem, getVideoItems, removeVideoItem } from '../utils/videos';
 import type { VideoItem } from '../utils/videos';
-
-const optimizeGalleryImage = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const objectUrl = URL.createObjectURL(file);
-    const image = new Image();
-
-    image.onload = () => {
-      const maxSize = 1600;
-      const scale = Math.min(maxSize / image.width, maxSize / image.height, 1);
-      const width = Math.round(image.width * scale);
-      const height = Math.round(image.height * scale);
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-
-      canvas.width = width;
-      canvas.height = height;
-
-      if (!context) {
-        URL.revokeObjectURL(objectUrl);
-        reject(new Error('Unable to prepare image preview.'));
-        return;
-      }
-
-      context.fillStyle = '#ffffff';
-      context.fillRect(0, 0, width, height);
-      context.drawImage(image, 0, 0, width, height);
-
-      const optimized = canvas.toDataURL('image/webp', 0.82);
-      URL.revokeObjectURL(objectUrl);
-      resolve(optimized);
-    };
-
-    image.onerror = () => {
-      URL.revokeObjectURL(objectUrl);
-      reject(new Error('Selected image could not be processed.'));
-    };
-
-    image.src = objectUrl;
-  });
+import { toVideoEmbedUrl } from '../utils/mediaLinks';
 
 const AdminDashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState<AdminSection>('overview');
@@ -78,7 +40,6 @@ const AdminDashboard: React.FC = () => {
   const [productError, setProductError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<GalleryItem | null>(null);
   const [deleteVideoTarget, setDeleteVideoTarget] = useState<VideoItem | null>(null);
-  const [deleteProductTarget, setDeleteProductTarget] = useState<ProductItem | null>(null);
   const [galleryForm, setGalleryForm] = useState({
     title: '',
     category: '',
@@ -86,10 +47,11 @@ const AdminDashboard: React.FC = () => {
   });
   const [productForm, setProductForm] = useState<ProductPayload>({
     name: '',
-    variants: [{ title: '', image: '', description: '' }],
+    display_order: 1,
+    is_active: 1,
+    variants: [{ title: '', image: '', description: '', display_order: 1, is_active: 1 }],
   });
   const [videoSrc, setVideoSrc] = useState('');
-  const [videoFile, setVideoFile] = useState<File | null>(null);
 
   const inquiryTypeLabels: Record<string, string> = {
     sales: 'Sales & Dealership',
@@ -178,26 +140,6 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-  const handleGalleryFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    setGalleryError(null);
-
-    try {
-      const optimizedImage = await optimizeGalleryImage(file);
-      setGalleryForm((prev) => ({
-        ...prev,
-        src: optimizedImage,
-      }));
-    } catch (err: unknown) {
-      setGalleryError(err instanceof Error ? err.message : 'Unable to read the selected image.');
-    }
-  };
-
   const addGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
     setGalleryError(null);
@@ -249,14 +191,14 @@ const AdminDashboard: React.FC = () => {
     e.preventDefault();
     setVideoError(null);
 
-    if (!videoFile) {
-      setVideoError('Please choose a video before saving.');
+    if (!videoSrc.trim()) {
+      setVideoError('Please add a video URL before saving.');
       return;
     }
 
     setVideoSaving(true);
     try {
-      const createdItem = await createVideoItem(videoFile);
+      const createdItem = await createVideoItem(videoSrc.trim());
 
       if (createdItem) {
         setVideoItems((prev) => [createdItem, ...prev]);
@@ -264,11 +206,7 @@ const AdminDashboard: React.FC = () => {
         await fetchVideos();
       }
 
-      if (videoSrc) {
-        URL.revokeObjectURL(videoSrc);
-      }
       setVideoSrc('');
-      setVideoFile(null);
       setIsVideoModalOpen(false);
     } catch (err: unknown) {
       setVideoError(err instanceof Error ? err.message : 'Unable to save video.');
@@ -277,27 +215,24 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleProductVariantImageChange = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    setProductError(null);
-
-    try {
-      const optimizedImage = await optimizeGalleryImage(file);
-      setProductForm((prev) => ({
-        ...prev,
-        variants: prev.variants.map((variant, variantIndex) =>
-          variantIndex === index ? { ...variant, image: optimizedImage } : variant
-        ),
-      }));
-    } catch (err: unknown) {
-      setProductError(err instanceof Error ? err.message : 'Unable to read the selected image.');
-    }
-  };
+  const buildProductPayloadFromItem = (
+    item: ProductItem,
+    overrides?: Partial<ProductPayload>
+  ): ProductPayload => ({
+    name: overrides?.name ?? item.name,
+    display_order: overrides?.display_order ?? item.displayOrder,
+    is_active: overrides?.is_active ?? (item.isActive ? 1 : 0),
+    variants:
+      overrides?.variants ??
+      item.variants.map((variant) => ({
+        id: variant.id,
+        title: variant.title,
+        image: variant.image,
+        description: variant.description,
+        display_order: variant.displayOrder,
+        is_active: variant.isActive ? 1 : 0,
+      })),
+  });
 
   const addProductItem = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -309,9 +244,12 @@ const AdminDashboard: React.FC = () => {
     }
 
     const cleanedVariants = productForm.variants.map((variant) => ({
+      id: variant.id,
       title: variant.title.trim(),
       image: variant.image.trim(),
       description: variant.description.trim(),
+      display_order: Number(variant.display_order) || 0,
+      is_active: variant.is_active,
     }));
 
     if (cleanedVariants.length === 0 || cleanedVariants.some((variant) => !variant.title || !variant.image || !variant.description)) {
@@ -323,6 +261,8 @@ const AdminDashboard: React.FC = () => {
     try {
       const payload = {
         name: productForm.name.trim(),
+        display_order: Number(productForm.display_order) || 0,
+        is_active: productForm.is_active,
         variants: cleanedVariants,
       };
 
@@ -348,7 +288,9 @@ const AdminDashboard: React.FC = () => {
 
       setProductForm({
         name: '',
-        variants: [{ title: '', image: '', description: '' }],
+        display_order: 1,
+        is_active: 1,
+        variants: [{ title: '', image: '', description: '', display_order: 1, is_active: 1 }],
       });
       setEditingProduct(null);
       setIsProductModalOpen(false);
@@ -359,18 +301,41 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const deleteProductItem = async () => {
-    if (!deleteProductTarget) {
-      return;
-    }
-
+  const updateProductVisibility = async (item: ProductItem, isActive: boolean) => {
     try {
-      await removeProductItem(deleteProductTarget.id);
-      setProductItems((prev) => prev.filter((item) => item.id !== deleteProductTarget.id));
-      setDeleteProductTarget(null);
+      const updatedItem = await updateProductItem(
+        item.id,
+        buildProductPayloadFromItem(item, { is_active: isActive ? 1 : 0 })
+      );
+
+      if (updatedItem) {
+        setProductItems((prev) => prev.map((entry) => (entry.id === item.id ? updatedItem : entry)));
+      } else {
+        await fetchProducts();
+      }
+
       setProductError(null);
     } catch (err: unknown) {
-      setProductError(err instanceof Error ? err.message : 'Unable to delete product.');
+      setProductError(err instanceof Error ? err.message : 'Unable to update product visibility.');
+    }
+  };
+
+  const updateProductOrder = async (item: ProductItem, displayOrder: number) => {
+    try {
+      const updatedItem = await updateProductItem(
+        item.id,
+        buildProductPayloadFromItem(item, { display_order: displayOrder })
+      );
+
+      if (updatedItem) {
+        setProductItems((prev) => prev.map((entry) => (entry.id === item.id ? updatedItem : entry)));
+      } else {
+        await fetchProducts();
+      }
+
+      setProductError(null);
+    } catch (err: unknown) {
+      setProductError(err instanceof Error ? err.message : 'Unable to update product order.');
     }
   };
 
@@ -560,7 +525,6 @@ const AdminDashboard: React.FC = () => {
                 isLoading={galleryLoading}
                 isSaving={gallerySaving}
                 onFieldChange={handleGalleryFieldChange}
-                onFileChange={handleGalleryFileChange}
                 onSubmit={addGalleryItem}
                 onRequestDelete={setDeleteTarget}
                 onConfirmDelete={deleteGalleryItem}
@@ -583,43 +547,16 @@ const AdminDashboard: React.FC = () => {
                 deleteTarget={deleteVideoTarget}
                 isLoading={videoLoading}
                 isSaving={videoSaving}
-                onFileChange={(e) => {
-                  const file = e.target.files?.[0];
-
-                  if (!file) {
-                    return;
-                  }
-
+                onUrlChange={(e) => {
                   setVideoError(null);
-
-                  if (file.size > 4 * 1024 * 1024) {
-                    e.target.value = '';
-                    setVideoFile(null);
-                    if (videoSrc) {
-                      URL.revokeObjectURL(videoSrc);
-                    }
-                    setVideoSrc('');
-                    setVideoError('Video size must be 4 MB or smaller.');
-                    return;
-                  }
-
-                  if (videoSrc) {
-                    URL.revokeObjectURL(videoSrc);
-                  }
-
-                  setVideoFile(file);
-                  setVideoSrc(URL.createObjectURL(file));
+                  setVideoSrc(toVideoEmbedUrl(e.target.value));
                 }}
                 onSubmit={addVideoItem}
                 onOpenModal={() => setIsVideoModalOpen(true)}
                 onCloseModal={() => {
-                  if (videoSrc) {
-                    URL.revokeObjectURL(videoSrc);
-                  }
                   setIsVideoModalOpen(false);
                   setVideoError(null);
                   setVideoSrc('');
-                  setVideoFile(null);
                 }}
                 onRequestDelete={setDeleteVideoTarget}
                 onConfirmDelete={deleteVideoItem}
@@ -632,13 +569,20 @@ const AdminDashboard: React.FC = () => {
                 productItems={productItems}
                 productForm={productForm}
                 isAddModalOpen={isProductModalOpen}
-                deleteTarget={deleteProductTarget}
                 productError={productError}
                 isLoading={productLoading}
                 isSaving={productSaving}
                 onProductNameChange={(value) => {
                   setProductError(null);
                   setProductForm((prev) => ({ ...prev, name: value }));
+                }}
+                onProductOrderChange={(value) => {
+                  setProductError(null);
+                  setProductForm((prev) => ({ ...prev, display_order: value }));
+                }}
+                onProductStatusToggle={() => {
+                  setProductError(null);
+                  setProductForm((prev) => ({ ...prev, is_active: prev.is_active === 1 ? 0 : 1 }));
                 }}
                 onVariantFieldChange={(index, field, value) => {
                   setProductError(null);
@@ -649,12 +593,20 @@ const AdminDashboard: React.FC = () => {
                     ),
                   }));
                 }}
-                onVariantImageChange={handleProductVariantImageChange}
                 onAddVariant={() => {
                   setProductError(null);
                   setProductForm((prev) => ({
                     ...prev,
-                    variants: [...prev.variants, { title: '', image: '', description: '' }],
+                    variants: [
+                      ...prev.variants,
+                      {
+                        title: '',
+                        image: '',
+                        description: '',
+                        display_order: prev.variants.length + 1,
+                        is_active: 1,
+                      },
+                    ],
                   }));
                 }}
                 onRemoveVariant={(index) => {
@@ -675,15 +627,27 @@ const AdminDashboard: React.FC = () => {
                           title: variant.title,
                           image: variant.image,
                           description: variant.description,
+                          display_order: variant.displayOrder,
+                          is_active: variant.isActive ? 1 : 0,
+                          id: variant.id,
                         }))
-                      : [{ title: '', image: '', description: '' }],
+                      : [{ title: '', image: '', description: '', display_order: 1, is_active: 1 }],
+                    display_order: item.displayOrder,
+                    is_active: item.isActive ? 1 : 0,
                   });
                   setIsProductModalOpen(true);
                 }}
-                onRequestDelete={setDeleteProductTarget}
-                onConfirmDelete={deleteProductItem}
+                onRequestStatusChange={updateProductVisibility}
+                onQuickOrderSave={updateProductOrder}
                 onOpenModal={() => {
                   setEditingProduct(null);
+                  setProductError(null);
+                  setProductForm({
+                    name: '',
+                    display_order: 1,
+                    is_active: 1,
+                    variants: [{ title: '', image: '', description: '', display_order: 1, is_active: 1 }],
+                  });
                   setIsProductModalOpen(true);
                 }}
                 onCloseModal={() => {
@@ -692,11 +656,12 @@ const AdminDashboard: React.FC = () => {
                   setProductError(null);
                   setProductForm({
                     name: '',
-                    variants: [{ title: '', image: '', description: '' }],
+                    display_order: 1,
+                    is_active: 1,
+                    variants: [{ title: '', image: '', description: '', display_order: 1, is_active: 1 }],
                   });
                 }}
                 isEditing={Boolean(editingProduct)}
-                onCloseDeleteModal={() => setDeleteProductTarget(null)}
               />
             )}
 

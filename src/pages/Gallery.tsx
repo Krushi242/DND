@@ -102,6 +102,7 @@ const Gallery: React.FC = () => {
                     src={image.src} 
                     alt={image.title}
                     className="h-auto min-h-[240px] w-full max-h-[420px] rounded-[18px] object-cover transition-transform duration-700 group-hover:scale-[1.02] md:min-h-[280px] md:max-h-[460px]"
+                    referrerPolicy="no-referrer"
                   />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 rounded-b-[18px] bg-[linear-gradient(180deg,rgba(9,18,16,0.02)_0%,rgba(9,18,16,0.72)_100%)] p-4 opacity-100 transition-all duration-500 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
                     <div className="flex items-end justify-between gap-3">
@@ -152,6 +153,7 @@ const Gallery: React.FC = () => {
             alt="Enlarged gallery view" 
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl animate-zoomIn"
             onClick={(e) => e.stopPropagation()}
+            referrerPolicy="no-referrer"
           />
         </div>
       )}

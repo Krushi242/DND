@@ -1,4 +1,5 @@
 import { getApiUrl } from './api';
+import { toGalleryImageUrl } from './mediaLinks';
 
 export interface GalleryItem {
   id: number;
@@ -21,7 +22,7 @@ const normalizeGalleryItem = (item: unknown): GalleryItem | null => {
 
   return {
     id,
-    src,
+    src: toGalleryImageUrl(src),
     title,
     category: (data?.description as string)?.trim?.() || (data?.category as string)?.trim?.() || 'Gallery',
   };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlaySquare, Plus, Trash2, X } from 'lucide-react';
 import type { VideoItem } from '../../utils/videos';
+import { isEmbeddableVideoUrl } from '../../utils/mediaLinks';
 
 interface AdminVideosSectionProps {
   videoItems: VideoItem[];
@@ -10,7 +11,7 @@ interface AdminVideosSectionProps {
   deleteTarget: VideoItem | null;
   isLoading: boolean;
   isSaving: boolean;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onOpenModal: () => void;
   onCloseModal: () => void;
@@ -27,7 +28,7 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
   deleteTarget,
   isLoading,
   isSaving,
-  onFileChange,
+  onUrlChange,
   onSubmit,
   onOpenModal,
   onCloseModal,
@@ -74,11 +75,21 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
           ) : (
             <div className="grid gap-4 xl:grid-cols-2">
               {videoItems.map((item, index) => (
-                <div key={item.id} className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white">
-                  <div className="aspect-video bg-black">
+              <div key={item.id} className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-white">
+                <div className="aspect-video bg-black">
+                  {isEmbeddableVideoUrl(item.videoUrl) ? (
+                    <iframe
+                      src={item.videoUrl}
+                      className="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title={`Video ${index + 1}`}
+                    />
+                  ) : (
                     <video controls className="h-full w-full object-contain">
                       <source src={item.videoUrl} />
                     </video>
+                  )}
                   </div>
                   <div className="space-y-3 p-4">
                     <div>
@@ -107,7 +118,7 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
               <div className="flex items-center justify-between border-b border-[#E2E8F0] px-6 py-5">
                 <div>
                   <h3 className="text-xl font-semibold text-[#1E293B]">Add Video</h3>
-                  <p className="mt-1 text-sm text-[#64748B]">Choose a video file to upload. Maximum allowed size is 4 MB.</p>
+                  <p className="mt-1 text-sm text-[#64748B]">Add a YouTube, Google Drive, or direct video URL.</p>
                 </div>
                 <button
                   type="button"
@@ -120,13 +131,14 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
 
               <form onSubmit={onSubmit} className="flex-1 space-y-4 overflow-y-auto p-6">
                 <div>
-                  <label htmlFor="video-file" className="mb-2 block text-sm font-medium text-[#334155]">Choose Video</label>
+                  <label htmlFor="video-url" className="mb-2 block text-sm font-medium text-[#334155]">Video URL</label>
                   <input
-                    id="video-file"
-                    type="file"
-                    accept="video/*"
-                    onChange={onFileChange}
-                    className="w-full rounded-[10px] border border-[#CBD5E1] bg-white px-4 py-3 text-sm text-[#1E293B] file:mr-3 file:rounded-[10px] file:border-0 file:bg-[#005948] file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#00483f]"
+                    id="video-url"
+                    type="url"
+                    value={videoSrc}
+                    onChange={onUrlChange}
+                    className="w-full rounded-[10px] border border-[#CBD5E1] bg-white px-4 py-3 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#005948]/20"
+                    placeholder="https://www.youtube.com/watch?v=xxxx"
                   />
                 </div>
 
@@ -139,9 +151,19 @@ const AdminVideosSection: React.FC<AdminVideosSectionProps> = ({
                 {videoSrc && (
                   <div className="overflow-hidden rounded-[10px] border border-[#E2E8F0] bg-[#F8FAFC]">
                     <div className="aspect-video bg-black">
-                      <video controls className="h-full w-full object-contain">
-                        <source src={videoSrc} />
-                      </video>
+                      {isEmbeddableVideoUrl(videoSrc) ? (
+                        <iframe
+                          src={videoSrc}
+                          className="h-full w-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title="Video preview"
+                        />
+                      ) : (
+                        <video controls className="h-full w-full object-contain">
+                          <source src={videoSrc} />
+                        </video>
+                      )}
                     </div>
                   </div>
                 )}

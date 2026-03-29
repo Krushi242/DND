@@ -7,6 +7,7 @@ import icon from '../assets/images/apme_symbol-green.svg';
 import CTA from '../components/sections/CTA';
 import { getVideoItems } from '../utils/videos';
 import type { VideoItem } from '../utils/videos';
+import { isEmbeddableVideoUrl } from '../utils/mediaLinks';
 
 const Videos: React.FC = () => {
   const [videos, setVideos] = useState<VideoItem[]>([]);
@@ -68,14 +69,24 @@ const Videos: React.FC = () => {
                     className="overflow-hidden rounded-[18px] border border-[#005948]/10 bg-white"
                   >
                     <div className="relative aspect-video bg-black">
-                      <video
-                        controls
-                        className="h-full w-full object-contain"
-                        poster={videoBg}
-                      >
-                        <source src={video.videoUrl} />
-                        Your browser does not support the video tag.
-                      </video>
+                      {isEmbeddableVideoUrl(video.videoUrl) ? (
+                        <iframe
+                          src={video.videoUrl}
+                          className="h-full w-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title={`Featured Video ${index + 1}`}
+                        />
+                      ) : (
+                        <video
+                          controls
+                          className="h-full w-full object-contain"
+                          poster={videoBg}
+                        >
+                          <source src={video.videoUrl} />
+                          Your browser does not support the video tag.
+                        </video>
+                      )}
 
                       <div className="pointer-events-none absolute left-4 top-4 z-10">
                         <div className="rounded-full bg-[#005948]/80 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">

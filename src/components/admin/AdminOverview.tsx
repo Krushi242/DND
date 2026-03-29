@@ -83,7 +83,7 @@ const AdminOverview: React.FC<AdminOverviewProps> = ({
             {recentGalleryItems.map((item) => (
               <div key={item.id} className="overflow-hidden rounded-[10px] border border-[#E2E8F0]">
                 <div className="aspect-square bg-[#E2E8F0]">
-                  <img src={item.src} alt={item.title} className="h-full w-full object-cover" />
+                  <img src={item.src} alt={item.title} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
                 </div>
                 <div className="p-3">
                   <p className="truncate text-sm font-semibold text-[#1E293B]">{item.title}</p>
