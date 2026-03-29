@@ -447,6 +447,7 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
                                       key={button.label}
                                       type="button"
                                       title={button.label}
+                                      onMouseDown={(e) => e.preventDefault()}
                                       onClick={() => runCommand(index, button.command, button.value)}
                                       className="inline-flex h-9 w-9 items-center justify-center rounded-[8px] text-[#475569] transition-colors hover:bg-white hover:text-[#1E293B]"
                                     >
@@ -459,12 +460,19 @@ const AdminProductsSection: React.FC<AdminProductsSectionProps> = ({
                               <div
                                 ref={(element) => {
                                   editorRefs.current[index] = element;
+                                  if (element && document.activeElement !== element) {
+                                    const current = element.innerHTML || '<p><br></p>';
+                                    const target = variant.description || '<p><br></p>';
+                                    if (current !== target) {
+                                      element.innerHTML = target;
+                                    }
+                                  }
                                 }}
                                 contentEditable
                                 suppressContentEditableWarning
                                 onInput={() => syncEditorContent(index)}
+                                onBlur={() => syncEditorContent(index)}
                                 className="min-h-[180px] max-h-[260px] overflow-y-auto px-4 py-3 text-left text-sm text-[#1E293B] [direction:ltr] focus:outline-none [&_blockquote]:my-0 [&_blockquote]:border-l-4 [&_blockquote]:border-[#D9E2EC] [&_blockquote]:pl-4 [&_div]:my-0 [&_div]:min-h-[1.5rem] [&_li]:ml-2 [&_ol]:my-0 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-0 [&_p]:min-h-[1.5rem] [&_ul]:my-0 [&_ul]:list-disc [&_ul]:pl-5"
-                                dangerouslySetInnerHTML={{ __html: variant.description || '<p><br></p>' }}
                               />
                             </div>
                             <p className="mt-2 text-xs text-[#64748B]">
